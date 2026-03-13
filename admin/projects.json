@@ -1,0 +1,10 @@
+{
+  "title": "Investment Portfolio",
+  "client": "Paul Mutuku Kingo'la",
+  "category": "Personal Portfolio",
+  "description": "A professional portfolio showcasing Paul's investments, track record, and credibility. Features include dark mode, metrics dashboard, testimonial sections, and a clean, professional design that impresses potential partners.",
+  "tech": ["HTML/CSS", "JavaScript", "Dark Mode", "FormSubmit"],
+  "url": "#",
+  "image": "/assets/images/project-paul.jpg",
+  "featured": true
+}

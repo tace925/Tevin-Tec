@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="site-title">Tevin's Tech · Programming & Systems Development</title>
+    <meta name="description" content="Professional programming services - custom websites, business systems, and digital solutions by Tevin and his team.">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="light-mode">
+    <!-- Tech Background -->
+    <div class="tech-bg"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-text" id="site-logo">TEVIN'S<span class="accent">TECH</span></span>
+            </div>
+            <nav class="desktop-nav">
+                <a href="index.html" class="active">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun light-icon"></i>
+                    <i class="fas fa-moon dark-icon"></i>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="team.html">Team</a>
+            <a href="contact.html">Contact</a>
+            <a href="faq.html">FAQ</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="admin/index.html" class="admin-link">Admin</a>
+        </div>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">We build systems <span class="accent">that scale</span></h1>
+                <p class="hero-subtitle">Custom websites · Business Systems · Digital Solutions</p>
+                <p class="hero-description">
+                    From personal portfolios to enterprise systems, our team of skilled programmers 
+                    turns ideas into powerful digital solutions.
+                </p>
+                <div class="hero-buttons">
+                    <a href="portfolio.html" class="btn btn-primary">View Our Work</a>
+                    <a href="contact.html" class="btn btn-outline">Hire Our Team</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUST BADGES -->
+        <section class="trust-badges">
+            <div class="badge-grid">
+                <div class="badge-item">
+                    <span class="badge-number">50+</span>
+                    <span class="badge-label">Projects Completed</span>
+                </div>
+                <div class="badge-item">
+                    <span class="badge-number">100%</span>
+                    <span class="badge-label">Client Satisfaction</span>
+                </div>
+                <div class="badge-item">
+                    <span class="badge-number">24/7</span>
+                    <span class="badge-label">Ongoing Support</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED WORK (Dynamic from CMS) -->
+        <section class="featured-work">
+            <h2 class="section-title">recent <span class="accent">projects</span></h2>
+            <div class="work-grid" id="projects-grid">
+                <!-- Projects loaded dynamically from CMS -->
+            </div>
+            <div class="view-all-container">
+                <a href="portfolio.html" class="view-all-link">View All Projects →</a>
+            </div>
+        </section>
+
+        <!-- SERVICES OVERVIEW -->
+        <section class="services-overview">
+            <h2 class="section-title">what we <span class="accent">do</span></h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Websites & Portfolios</h3>
+                    <p>Personal, business, and portfolio websites with modern design</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-building"></i>
+                    <h3>Business Systems</h3>
+                    <p>Custom software for inventory, management, and operations</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Custom Development</h3>
+                    <p>Tailored solutions for unique business needs</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOUNDER SECTION -->
+        <section class="founder">
+            <div class="founder-grid">
+                <div class="founder-image">
+                    <img src="assets/images/tevin-placeholder.jpg" alt="Tevin Mulinge" class="profile-image" id="profile-img">
+                    <div class="image-placeholder" id="profile-placeholder" style="display: none;">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+                <div class="founder-content">
+                    <h2>meet the <span class="accent">founder</span></h2>
+                    <h3 id="founder-name">I'm Tevin Mulinge</h3>
+                    <p id="founder-bio">
+                        A computer science student who turned a passion for programming into 
+                        a team of skilled developers. I started by building portfolios for 
+                        entrepreneurs, and today we help businesses go digital with custom 
+                        solutions that actually work.
+                    </p>
+                    <div class="founder-stats">
+                        <div class="stat">
+                            <span class="stat-number">3+</span>
+                            <span class="stat-label">Years Coding</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">5+</span>
+                            <span class="stat-label">Team Members</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Projects</span>
+                        </div>
+                    </div>
+                    <a href="about.html" class="btn btn-secondary">my story →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS (Dynamic from CMS) -->
+        <section class="testimonials">
+            <h2 class="section-title">client <span class="accent">feedback</span></h2>
+            <div class="testimonials-grid" id="testimonials-grid">
+                <!-- Testimonials loaded dynamically from CMS -->
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta">
+            <h2>ready to build something <span class="accent">amazing?</span></h2>
+            <p>Let's discuss your project and how our team can help.</p>
+            <a href="contact.html" class="btn btn-primary btn-large">contact our team</a>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
+                <p id="footer-tagline">Building systems that scale</p>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="team.html">Team</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="faq.html">FAQ</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="admin/index.html">Admin</a>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="developer-credit">
+                    <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong>
+                </div>
+                <div class="copyright">
+                    © 2026 Tevin's Tech. All rights reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

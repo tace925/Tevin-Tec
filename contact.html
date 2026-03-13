@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us · Tevin's Tech</title>
+    <meta name="description" content="Get in touch with Tevin's Tech for your programming needs.">
+    
+    <!-- CSS - SAME FILE -->
+    <link rel="stylesheet" href="style.css".css>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="light-mode">
+    <!-- World Map Background -->
+    <div class="world-map-bg"></div>
+    
+    <div class="container">
+        <!-- Header (SAME AS INDEX) -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
+            </div>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html" class="active">Contact</a>
+            </nav>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun light-icon"></i>
+                    <i class="fas fa-moon dark-icon"></i>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="team.html">Team</a>
+            <a href="contact.html">Contact</a>
+            <a href="faq.html">FAQ</a>
+            <a href="privacy.html">Privacy</a>
+        </div>
+
+        <!-- PAGE HEADER -->
+        <section class="page-header">
+            <h1 class="page-title">contact <span class="accent">us</span></h1>
+            <p class="page-subtitle">Let's discuss your project</p>
+        </section>
+
+        <!-- CONTACT GRID -->
+        <section class="contact-grid-full">
+            <!-- Contact Info -->
+            <div class="contact-info-full">
+                <h2>get in <span class="accent">touch</span></h2>
+                
+                <div class="contact-details">
+                    <div class="contact-detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>tevin@tevinstech.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+254 7XX XXX XXX</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Nairobi, Kenya · Available Worldwide</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Hours</h4>
+                            <p>Mon-Fri: 9am - 6pm · Weekend: By appointment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-social">
+                    <h4>Follow us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-full">
+                <h2>send a <span class="accent">message</span></h2>
+                <form class="contact-form" action="https://formsubmit.co/your-email-here" method="POST">
+                    <!-- Hidden fields -->
+                    <input type="hidden" name="_subject" value="New message from Tevin's Tech website">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="thank-you.html">
+                    <input type="hidden" name="_template" value="box">
+                    <input type="hidden" name="_autoresponse" value="Thank you for contacting Tevin's Tech. We'll respond within 24 hours.">
+                    
+                    <!-- Honeypot -->
+                    <input type="text" name="_honey" style="display:none">
+                    
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" name="company" placeholder="Company (optional)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <select name="project-type">
+                            <option value="" disabled selected>Select project type</option>
+                            <option value="website">Website / Portfolio</option>
+                            <option value="business">Business System</option>
+                            <option value="custom">Custom Development</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea name="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large">send message</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- MAP PLACEHOLDER -->
+        <section class="map-section">
+            <div class="map-placeholder">
+                <i class="fas fa-map-marked-alt"></i>
+                <p>Nairobi, Kenya · Serving clients worldwide</p>
+            </div>
+        </section>
+
+        <!-- FOOTER (SAME AS INDEX) -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
+                <p>Building systems that scale</p>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="team.html">Team</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="faq.html">FAQ</a>
+                    <a href="privacy.html">Privacy</a>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="developer-credit">
+                    <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong>
+                </div>
+                <div class="copyright">
+                    © 2026 Tevin's Tech. All rights reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript - SAME FILE -->
+    <script src="script.js"></script>
+</body>
+</html>

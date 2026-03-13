@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio · Tevin's Tech</title>
+    <meta name="description" content="View our recent projects - investment portfolios, culinary sites, and business systems.">
+    
+    <!-- CSS - SAME FILE -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="light-mode">
+    <!-- World Map Background -->
+    <div class="world-map-bg"></div>
+    
+    <div class="container">
+        <!-- Header (SAME AS INDEX) -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
+            </div>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="portfolio.html" class="active">Portfolio</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun light-icon"></i>
+                    <i class="fas fa-moon dark-icon"></i>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="team.html">Team</a>
+            <a href="contact.html">Contact</a>
+            <a href="faq.html">FAQ</a>
+            <a href="privacy.html">Privacy</a>
+        </div>
+
+        <!-- PAGE HEADER -->
+        <section class="page-header">
+            <h1 class="page-title">our <span class="accent">work</span></h1>
+            <p class="page-subtitle">Recent projects we're proud of</p>
+        </section>
+
+        <!-- PORTFOLIO GRID -->
+        <section class="portfolio-grid-full">
+            <!-- Project 1: Paul -->
+            <div class="portfolio-item">
+                <div class="portfolio-image">📊</div>
+                <div class="portfolio-details">
+                    <h2>Investment Portfolio</h2>
+                    <p class="portfolio-client">Paul Mutuku Kingo'la</p>
+                    <p class="portfolio-category">Personal Portfolio · Investor</p>
+                    <p class="portfolio-description">
+                        A professional portfolio showcasing Paul's investments, track record, and credibility. 
+                        Features include dark mode, metrics dashboard, testimonial sections, and a clean, 
+                        professional design that impreses potential partners.
+                    </p>
+                    <div class="portfolio-tech">
+                        <span>HTML/CSS</span>
+                        <span>JavaScript</span>
+                        <span>Dark Mode</span>
+                        <span>FormSubmit</span>
+                    </div>
+                    <a href="#" class="btn btn-primary">view live site</a>
+                </div>
+            </div>
+
+            <!-- Project 2: Trizah -->
+            <div class="portfolio-item">
+                <div class="portfolio-image">🍳</div>
+                <div class="portfolio-details">
+                    <h2>Culinary Portfolio</h2>
+                    <p class="portfolio-client">Trizah Njeri</p>
+                    <p class="portfolio-category">Food Creator · Chef Portfolio</p>
+                    <p class="portfolio-description">
+                        A warm, inviting portfolio for a culinary creator featuring recipe collections, 
+                        kitchen updates, music integration, and a beautiful food-themed design that reflects 
+                        her personality and work.
+                    </p>
+                    <div class="portfolio-tech">
+                        <span>HTML/CSS</span>
+                        <span>JavaScript</span>
+                        <span>Food Theme</span>
+                        <span>Contact Form</span>
+                    </div>
+                    <a href="#" class="btn btn-primary">view live site</a>
+                </div>
+            </div>
+
+            <!-- Project 3: Your Personal Portfolio -->
+            <div class="portfolio-item">
+                <div class="portfolio-image">💼</div>
+                <div class="portfolio-details">
+                    <h2>Developer Portfolio</h2>
+                    <p class="portfolio-client">Tevin Mulinge</p>
+                    <p class="portfolio-category">Personal Portfolio · Developer</p>
+                    <p class="portfolio-description">
+                        A modern developer portfolio showcasing skills, projects, and experience. Features 
+                        include dark mode, project galleries, and a clean, professional design that attracts 
+                        potential clients and employers.
+                    </p>
+                    <div class="portfolio-tech">
+                        <span>HTML/CSS</span>
+                        <span>JavaScript</span>
+                        <span>Dark Mode</span>
+                        <span>Responsive</span>
+                    </div>
+                    <a href="#" class="btn btn-primary">view live site</a>
+                </div>
+            </div>
+
+            <!-- Project 4: Placeholder for future -->
+            <div class="portfolio-item placeholder">
+                <div class="portfolio-image">✨</div>
+                <div class="portfolio-details">
+                    <h2>Your Project Here</h2>
+                    <p class="portfolio-client">Next Client</p>
+                    <p class="portfolio-category">Coming Soon</p>
+                    <p class="portfolio-description">
+                        Ready to build something amazing? Your project could be featured here. Contact us to 
+                        discuss your idea and join our portfolio of happy clients.
+                    </p>
+                    <a href="contact.html" class="btn btn-outline">start your project</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta">
+            <h2>want your project <span class="accent">featured?</span></h2>
+            <p>Let's build something amazing together</p>
+            <a href="contact.html" class="btn btn-primary btn-large">get started</a>
+        </section>
+
+        <!-- FOOTER (SAME AS INDEX) -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
+                <p>Building systems that scale</p>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="team.html">Team</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="faq.html">FAQ</a>
+                    <a href="privacy.html">Privacy</a>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="developer-credit">
+                    <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong>
+                </div>
+                <div class="copyright">
+                    © 2026 Tevin's Tech. All rights reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript - SAME FILE -->
+    <script src="script.js"></script>
+</body>
+</html>
