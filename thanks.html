@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thank You · Tevin's Tech</title>
+    <meta name="description" content="Thank you for contacting Tevin's Tech. We'll respond within 24 hours.">
     
     <!-- CSS - SAME FILE -->
     <link rel="stylesheet" href="style.css">
@@ -19,7 +20,7 @@
     <div class="world-map-bg"></div>
     
     <div class="container">
-        <!-- Header (SAME AS INDEX) -->
+        <!-- Header -->
         <div class="header">
             <div class="logo">
                 <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
@@ -55,25 +56,58 @@
             <a href="privacy.html">Privacy</a>
         </div>
 
-        <!-- THANK YOU CONTENT -->
+        <!-- THANK YOU SECTION - Enhanced Creative Version -->
         <section class="thank-you-section">
             <div class="thank-you-card">
-                <i class="fas fa-check-circle"></i>
-                <h1>Thank You!</h1>
-                <p>Your message has been sent successfully.</p>
-                <p>We'll get back to you within 24 hours.</p>
+                <div class="thank-you-icon">
+                    <i class="fas fa-paper-plane"></i>
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1>Thank You <span class="accent">!</span></h1>
+                <p class="thank-you-message">Your message has been sent successfully.</p>
+                <p class="thank-you-details">I'm excited to read it and will respond within 24 hours. Keep an eye on your inbox for a reply from <strong>tevinmulinge48@gmail.com</strong></p>
+                
+                <div class="thank-you-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span>24hr Response</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <span>Confirmation Sent</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-code"></i>
+                        <span>Built with ❤️</span>
+                    </div>
+                </div>
+                
                 <div class="thank-you-actions">
-                    <a href="index.html" class="btn btn-primary">return home</a>
-                    <a href="portfolio.html" class="btn btn-outline">view our work</a>
+                    <a href="portfolio.html" class="btn btn-primary">
+                        <i class="fas fa-eye"></i> view our work
+                    </a>
+                    <a href="index.html" class="btn btn-outline">
+                        <i class="fas fa-home"></i> return home
+                    </a>
+                </div>
+                
+                <div class="thank-you-social">
+                    <p>While you wait, connect with me:</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- FOOTER (SAME AS INDEX) -->
+        <!-- FOOTER -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
-                <p>Building systems that scale</p>
+                <p>Building systems that scale · One line of code at a time</p>
                 <div class="footer-links">
                     <a href="index.html">Home</a>
                     <a href="about.html">About</a>
@@ -94,13 +128,212 @@
                     <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong>
                 </div>
                 <div class="copyright">
-                    © 2026 Tevin's Tech. All rights reserved.
+                    © 2026 Tevin's Tech · Made with <i class="fas fa-heart" style="color: var(--accent);"></i> in Nairobi
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- JavaScript - SAME FILE -->
+    <!-- Add this CSS to enhance the thank you page -->
+    <style>
+    /* Enhanced Thank You Page Styles */
+    .thank-you-section {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+    
+    .thank-you-card {
+        max-width: 700px;
+        padding: 4rem 3rem;
+        background: var(--bg-secondary);
+        border-radius: 3rem;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .thank-you-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+        box-shadow: 0 30px 60px rgba(107, 70, 193, 0.2);
+    }
+    
+    .thank-you-icon {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .thank-you-icon .fa-paper-plane {
+        font-size: 5rem;
+        color: var(--accent);
+        animation: fly 3s ease-in-out infinite;
+    }
+    
+    .thank-you-icon .fa-check-circle {
+        font-size: 2rem;
+        color: #4CAF50;
+        position: absolute;
+        bottom: 0;
+        right: 35%;
+        background: var(--bg-secondary);
+        border-radius: 50%;
+        animation: pop 0.5s ease-out 0.5s both;
+    }
+    
+    .thank-you-card h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        font-family: 'Playfair Display', serif;
+    }
+    
+    .thank-you-message {
+        font-size: 1.3rem;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+    }
+    
+    .thank-you-details {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.8;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .thank-you-stats {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 2.5rem 0;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: var(--bg-primary);
+        border-radius: 50px;
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        transition: all 0.3s;
+    }
+    
+    .stat-item:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+    }
+    
+    .stat-item i {
+        color: var(--accent);
+    }
+    
+    .thank-you-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin: 2.5rem 0;
+        flex-wrap: wrap;
+    }
+    
+    .thank-you-social {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+    }
+    
+    .thank-you-social p {
+        color: var(--text-tertiary);
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .thank-you-social .social-links {
+        justify-content: center;
+        margin: 0;
+    }
+    
+    @keyframes fly {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-15px) rotate(5deg);
+        }
+    }
+    
+    @keyframes pop {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    /* Dark mode adjustments */
+    .dark-mode .stat-item {
+        background: var(--bg-secondary);
+    }
+    
+    .dark-mode .thank-you-icon .fa-check-circle {
+        background: var(--bg-secondary);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .thank-you-card {
+            padding: 3rem 1.5rem;
+        }
+        
+        .thank-you-card h1 {
+            font-size: 2.5rem;
+        }
+        
+        .thank-you-message {
+            font-size: 1.1rem;
+        }
+        
+        .thank-you-stats {
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .thank-you-actions {
+            flex-direction: column;
+        }
+        
+        .thank-you-actions .btn {
+            width: 100%;
+        }
+    }
+    </style>
+
+    <!-- JavaScript -->
     <script src="script.js"></script>
+    
+    <!-- Optional: Auto-redirect after 10 seconds (remove if not wanted) -->
+    <!-- <script>
+        setTimeout(function() {
+            window.location.href = 'index.html';
+        }, 10000);
+    </script> -->
 </body>
 </html>
