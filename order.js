@@ -1,5 +1,5 @@
 // ===== SAFARICOM DARAJA M-PESA INTEGRATION =====
-// FIXED WITH CORS PROXY
+// FIXED URL AND FORMAT
 
 const MPESA_CONFIG = {
     consumerKey: '2Y1V7xDvU8WC3fZsQd1DVbyqYkJkqjYEtGLv9n9J55PCFIKS',
@@ -9,9 +9,9 @@ const MPESA_CONFIG = {
     environment: 'sandbox'
 };
 
-const SITE_URL = 'https://tevin-tech.netlify.app';
+const SITE_URL = 'https://tevin-t3c.netlify.app';
 
-// CORS Proxy to bypass Safaricom's CORS restrictions
+// CORRECTED CORS Proxy URL format
 const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -61,12 +61,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Get M-Pesa access token (with CORS proxy)
+    // Get M-Pesa access token - FIXED URL
     async function getMpesaToken() {
         try {
             const credentials = btoa(`${MPESA_CONFIG.consumerKey}:${MPESA_CONFIG.consumerSecret}`);
             
-            // Use CORS proxy to bypass Safaricom's CORS restrictions
+            // CORRECT URL - make sure it's exactly this
             const tokenUrl = CORS_PROXY + 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
             
             console.log('Fetching token from:', tokenUrl);
@@ -76,13 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 
                     'Authorization': `Basic ${credentials}`,
                     'Content-Type': 'application/json',
-                    'Origin': SITE_URL
+                    'X-Requested-With': 'XMLHttpRequest' // Add this for CORS proxy
                 }
             });
             
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
+                console.error('Response status:', response.status);
+                console.error('Response text:', errorText);
+                throw new Error(`HTTP ${response.status}: ${errorText || 'Unknown error'}`);
             }
             
             const data = await response.json();
@@ -137,7 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 TransactionDesc: `Payment for ${orderRef}`
             };
             
-            // Use CORS proxy for STK push as well
             const stkUrl = CORS_PROXY + 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
             
             const response = await fetch(stkUrl, {
@@ -145,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
-                    'Origin': SITE_URL
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify(stkPushRequest)
             });
