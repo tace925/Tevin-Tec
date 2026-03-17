@@ -1,242 +1,420 @@
-// ===== SAFARICOM DARAJA M-PESA INTEGRATION =====
-// FIXED WITH CORRECT CREDENTIALS
+// ===== TEVIN'S TECH - COMPLETE JAVASCRIPT =====
+// This one JS file handles ALL functionality for every page
+// Version: 1.2 (Updated March 2026) - Removed CMS data loading
 
-const MPESA_CONFIG = {
-    // CORRECTED Consumer Key (fixed the typo)
-    consumerKey: '2Y1V7xDvU8WC3fZsQd1DVbyqYkJkqjYEtGLv9n9J55PCFIKS',
-    
-    // Consumer Secret (correct as is)
-    consumerSecret: 'ObhVj0tMD1gGjrGTcfTpAiXfNF0ZQnsLYzauGAGcrAtveqU9ddNFr47phVdmAfG9',
-    
-    // Passkey from your successful test
-    passkey: 'MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjYwMzE3MjIzNzE1',
-    
-    shortCode: '174379',
-    environment: 'sandbox'
-};
-
-// Your site URL
-const SITE_URL = 'https://gleeful-speculoos-7d9eff.netlify.app';
-
+// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Package selection
-    const packageCards = document.querySelectorAll('.package-card');
-    const selectedPackageInput = document.getElementById('selectedPackageInput');
-    const summaryPackage = document.getElementById('summaryPackage');
-    const summaryPrice = document.getElementById('summaryPrice');
-    const summaryTotal = document.getElementById('summaryTotal');
     
-    const packages = {
-        basic: { name: 'Basic', price: 'KES 25,000', total: 'KES 25,000' },
-        professional: { name: 'Professional', price: 'KES 45,000', total: 'KES 45,000' },
-        enterprise: { name: 'Enterprise', price: 'KES 80,000', total: 'KES 80,000' }
-    };
+    // ===== 1. MOBILE MENU TOGGLE =====
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
     
-    packageCards.forEach(card => {
-        card.addEventListener('click', function() {
-            packageCards.forEach(c => c.classList.remove('selected'));
-            this.classList.add('selected');
-            const packageId = this.id.replace('package-', '');
-            if (selectedPackageInput) selectedPackageInput.value = packageId;
-            
-            summaryPackage.textContent = packages[packageId].name;
-            summaryPrice.textContent = packages[packageId].price;
-            summaryTotal.textContent = packages[packageId].total;
+    if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileNav.classList.toggle('active');
         });
-    });
-    
-    // Budget slider
-    const budgetSlider = document.getElementById('budgetSlider');
-    const budgetDisplay = document.getElementById('budgetDisplay');
-    
-    if (budgetSlider && budgetDisplay) {
-        budgetSlider.addEventListener('input', function() {
-            budgetDisplay.textContent = 'KES ' + parseInt(this.value).toLocaleString();
+        
+        // Close mobile menu when clicking a link
+        mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                mobileNav.classList.remove('active');
+            });
         });
     }
     
-    // Payment method toggle
-    document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const mpesaInput = document.querySelector('.mpesa-input');
-            if (mpesaInput) {
-                mpesaInput.style.display = this.value === 'mpesa' ? 'block' : 'none';
+    // ===== 2. THEME TOGGLE (Dark/Light Mode) =====
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    
+    // Apply saved theme or default to light
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+    } else {
+        body.classList.add('light-mode');
+    }
+    
+    // Toggle theme function
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    }
+    
+    // ===== 3. SMOOTH SCROLLING for anchor links =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
         });
     });
     
-    // Get M-Pesa access token
-    async function getMpesaToken() {
-        try {
-            const credentials = btoa(`${MPESA_CONFIG.consumerKey}:${MPESA_CONFIG.consumerSecret}`);
-            
-            const response = await fetch('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', {
-                method: 'GET',
-                headers: { 
-                    'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/json'
+    // ===== 4. ACTIVE PAGE HIGHLIGHT =====
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
+    // Desktop nav
+    document.querySelectorAll('.desktop-nav a').forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage) {
+            link.classList.add('active');
+        }
+    });
+    
+    // Mobile nav
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage) {
+            link.classList.add('active');
+        }
+    });
+    
+    // ===== 5. FAQ ACCORDION =====
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const toggle = item.querySelector('.faq-toggle');
+        
+        if (question && answer && toggle) {
+            question.addEventListener('click', function() {
+                answer.classList.toggle('active');
+                
+                if (answer.classList.contains('active')) {
+                    toggle.textContent = '−';
+                } else {
+                    toggle.textContent = '+';
                 }
             });
+        }
+    });
+    
+    // ===== 6. FORM VALIDATION =====
+    const contactForm = document.querySelector('.contact-form');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            const name = this.querySelector('input[name="name"]');
+            const email = this.querySelector('input[name="email"]');
+            const message = this.querySelector('textarea[name="message"]');
             
-            if (!response.ok) {
-                throw new Error(`HTTP error ${response.status}`);
+            let isValid = true;
+            let errorMessage = '';
+            
+            if (!name || !name.value.trim()) {
+                isValid = false;
+                errorMessage = 'Please enter your name';
+            } else if (!email || !email.value.trim()) {
+                isValid = false;
+                errorMessage = 'Please enter your email';
+            } else if (!isValidEmail(email.value.trim())) {
+                isValid = false;
+                errorMessage = 'Please enter a valid email address';
+            } else if (!message || !message.value.trim()) {
+                isValid = false;
+                errorMessage = 'Please enter your message';
             }
             
-            const data = await response.json();
-            return data.access_token;
-            
-        } catch (error) {
-            console.error('Token error:', error);
-            return null;
-        }
+            if (!isValid) {
+                e.preventDefault();
+                showNotification(errorMessage, 'error');
+            }
+        });
     }
     
-    // Initiate STK Push
-    async function initiateSTKPush(amount, phone, orderRef) {
-        const token = await getMpesaToken();
-        if (!token) return { success: false, error: 'Failed to get auth token' };
+    // Email validation helper
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    // ===== 7. NOTIFICATION SYSTEM =====
+    function showNotification(message, type) {
+        let notificationContainer = document.querySelector('.notification-container');
         
-        // Format phone number
-        const formattedPhone = phone.replace(/^0+/, '254').replace(/^\+254/, '254');
+        if (!notificationContainer) {
+            notificationContainer = document.createElement('div');
+            notificationContainer.className = 'notification-container';
+            notificationContainer.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+            `;
+            document.body.appendChild(notificationContainer);
+        }
         
-        // Generate timestamp
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            background: ${type === 'error' ? '#E53E3E' : '#6B46C1'};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        `;
+        notification.textContent = message;
         
-        const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}`;
+        notificationContainer.appendChild(notification);
         
-        // Generate password
-        const passwordString = MPESA_CONFIG.shortCode + MPESA_CONFIG.passkey + timestamp;
-        const password = btoa(passwordString);
-        
-        const stkPushRequest = {
-            BusinessShortCode: MPESA_CONFIG.shortCode,
-            Password: password,
-            Timestamp: timestamp,
-            TransactionType: 'CustomerPayBillOnline',
-            Amount: Math.floor(amount),
-            PartyA: formattedPhone,
-            PartyB: MPESA_CONFIG.shortCode,
-            PhoneNumber: formattedPhone,
-            CallBackURL: `${SITE_URL}/api/mpesa-callback`,
-            AccountReference: orderRef,
-            TransactionDesc: `Payment for ${orderRef}`
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 300);
+        }, 3000);
+    }
+    
+    // ===== 8. SCROLL TO TOP BUTTON =====
+    const scrollBtn = document.createElement('button');
+    scrollBtn.innerHTML = '↑';
+    scrollBtn.className = 'scroll-top';
+    scrollBtn.setAttribute('aria-label', 'Scroll to top');
+    scrollBtn.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--accent, #6B46C1);
+        color: white;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    `;
+    document.body.appendChild(scrollBtn);
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 500) {
+            scrollBtn.style.display = 'flex';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+    
+    scrollBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    scrollBtn.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1)';
+    });
+    
+    scrollBtn.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
+    
+    // ===== 9. DYNAMIC YEAR IN FOOTER =====
+    const copyrightElements = document.querySelectorAll('.copyright');
+    const currentYear = new Date().getFullYear();
+    
+    copyrightElements.forEach(el => {
+        if (el) {
+            el.innerHTML = el.innerHTML.replace('2026', currentYear);
+        }
+    });
+    
+    // ===== 10. INTERSECTION OBSERVER FOR ANIMATIONS =====
+    if ('IntersectionObserver' in window) {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
         
-        try {
-            const response = await fetch('https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(stkPushRequest)
+        const sectionObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
             });
-            
-            const data = await response.json();
-            
-            if (data.ResponseCode === '0') {
-                return {
-                    success: true,
-                    checkoutRequestID: data.CheckoutRequestID,
-                    message: 'STK Push sent'
-                };
-            } else {
-                return {
-                    success: false,
-                    error: data.errorMessage || 'STK Push failed',
-                    data: data
-                };
-            }
-        } catch (error) {
-            console.error('STK Push error:', error);
-            return { success: false, error: 'Network error' };
-        }
-    }
-    
-    // Form submission
-    const orderForm = document.getElementById('orderForm');
-    
-    if (orderForm) {
-        orderForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'mpesa';
-            
-            let amount = parseInt(document.getElementById('budgetSlider')?.value);
-            if (!amount || isNaN(amount)) {
-                const priceText = summaryPrice.textContent.replace(/[^0-9]/g, '');
-                amount = parseInt(priceText) || 45000;
-            }
-            
-            const orderRef = 'TT-' + Date.now().toString().slice(-8);
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            // Save order data
-            const orderData = {
-                reference: orderRef,
-                amount: amount,
-                package: summaryPackage.textContent,
-                name: document.querySelector('input[name="name"]')?.value,
-                email: document.querySelector('input[name="email"]')?.value,
-                date: new Date().toISOString()
-            };
-            localStorage.setItem('currentOrder', JSON.stringify(orderData));
-            
-            if (paymentMethod === 'mpesa') {
-                const phone = document.getElementById('mpesaPhone')?.value;
-                
-                if (!phone || !phone.match(/^(254|0)[0-9]{9}$/)) {
-                    alert('Please enter a valid M-Pesa phone number (e.g., 254712345678)');
-                    return;
-                }
-                
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending STK Push...';
-                submitBtn.disabled = true;
-                
-                const result = await initiateSTKPush(amount, phone, orderRef);
-                
-                if (result.success) {
-                    orderData.checkoutRequestID = result.checkoutRequestID;
-                    localStorage.setItem('currentOrder', JSON.stringify(orderData));
-                    window.location.href = 'payment-processing.html';
-                } else {
-                    alert('Payment failed: ' + (result.error || 'Please try again'));
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
-            } else {
-                // Submit to Formspree
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-                submitBtn.disabled = true;
-                
-                try {
-                    const formData = new FormData(this);
-                    formData.append('order_reference', orderRef);
-                    
-                    const response = await fetch(this.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    
-                    if (response.ok) {
-                        window.location.href = 'order-confirmation.html';
-                    } else {
-                        throw new Error('Submission failed');
-                    }
-                } catch (error) {
-                    alert('Error submitting form. Please email me directly.');
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
+        }, observerOptions);
+        
+        const elementsToObserve = document.querySelectorAll(
+            '.work-card, .service-card, .testimonial-card, .badge-item, ' +
+            '.value-card, .stat-card, .why-item, .process-step, ' +
+            '.portfolio-item, .team-member, .faq-item'
+        );
+        
+        elementsToObserve.forEach(el => {
+            if (el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                sectionObserver.observe(el);
             }
         });
     }
+    
+    // ===== 11. PLACEHOLDER CLICK HANDLERS =====
+    document.querySelectorAll('.portfolio-item.placeholder').forEach(el => {
+        if (el) {
+            el.addEventListener('click', function(e) {
+                if (!e.target.closest('a')) {
+                    e.preventDefault();
+                    showNotification('✨ New project coming soon!', 'info');
+                }
+            });
+        }
+    });
+    
+    // ===== 12. ADD ANIMATION STYLES =====
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // ===== 13. FORM FIELD FOCUS EFFECTS =====
+    document.querySelectorAll('input, textarea, select').forEach(field => {
+        field.addEventListener('focus', function() {
+            this.style.borderColor = 'var(--accent)';
+            this.style.outline = 'none';
+        });
+        
+        field.addEventListener('blur', function() {
+            this.style.borderColor = 'var(--border)';
+        });
+    });
+    
+    // ===== 14. CONSOLE MESSAGE =====
+    console.log('%c🚀 Tevin\'s Tech', 'font-size: 20px; font-weight: bold; color: #6B46C1;');
+    console.log('%cWebsite crafted by Tevin Mulinge', 'font-size: 14px; color: #FFB347;');
+    
+    // ===== 15. TOUCH DEVICE DETECTION =====
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) {
+        document.body.classList.add('touch-device');
+    }
+    
+    // ===== 16. EXTERNAL LINK HANDLER =====
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            console.log('External link clicked:', this.href);
+        });
+    });
+    
+    // ===== 17. FINAL INITIALIZATION LOG =====
+    console.log('✅ All systems ready');
 });
+
+// ===== 18. WINDOW LOAD EVENTS =====
+window.addEventListener('load', function() {
+    
+    // Profile image fallback
+    const profileImg = document.getElementById('profile-img');
+    const profilePlaceholder = document.getElementById('profile-placeholder');
+    
+    if (profileImg && profilePlaceholder) {
+        profileImg.onerror = function() {
+            profileImg.style.display = 'none';
+            profilePlaceholder.style.display = 'flex';
+        };
+        
+        profileImg.onload = function() {
+            profileImg.style.display = 'block';
+            profilePlaceholder.style.display = 'none';
+        };
+        
+        if (profileImg.complete) {
+            if (profileImg.naturalHeight === 0) {
+                profileImg.onerror();
+            } else {
+                profileImg.onload();
+            }
+        }
+    }
+    
+    document.body.style.opacity = '1';
+});
+
+// ===== 19. ERROR HANDLING =====
+window.addEventListener('error', function(e) {
+    console.log('Error caught:', e.message);
+});
+
+// ===== 20. BROWSER BACK BUTTON HANDLING =====
+window.addEventListener('popstate', function() {
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileNav && mobileNav.classList.contains('active')) {
+        mobileNav.classList.remove('active');
+    }
+});
+
+// ===== 21. NETLIFY IDENTITY FOR ADMIN =====
+if (window.netlifyIdentity) {
+    window.netlifyIdentity.on('init', user => {
+        if (!user) {
+            window.netlifyIdentity.on('login', () => {
+                document.location.href = '/admin/';
+            });
+        }
+    });
+}
+
+// Add admin link to footer if user is logged in
+function checkAdminAccess() {
+    const adminLink = document.querySelector('.admin-link');
+    if (adminLink && window.netlifyIdentity && window.netlifyIdentity.currentUser()) {
+        adminLink.style.display = 'block';
+    } else if (adminLink) {
+        adminLink.style.display = 'none';
+    }
+}
+
+if (window.netlifyIdentity) {
+    setInterval(checkAdminAccess, 5000);
+}
