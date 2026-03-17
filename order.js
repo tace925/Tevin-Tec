@@ -1,25 +1,18 @@
 // ===== SAFARICOM DARAJA M-PESA INTEGRATION =====
-// COMPLETE WITH CORRECT APP-SPECIFIC PASSKEY
+// FIXED WITH CORS PROXY
 
 const MPESA_CONFIG = {
-    // Your Consumer Key from Safaricom Developer Portal
     consumerKey: '2Y1V7xDvU8WC3fZsQd1DVbyqYkJkqjYEtGLv9n9J55PCFIKS',
-    
-    // Your Consumer Secret from Safaricom Developer Portal
     consumerSecret: 'ObhVj0tMD1gGjrGTcfTpAiXfNF0ZQnsLYzauGAGcrAtveqU9ddNFr47phVdmAfG9',
-    
-    // YOUR APP-SPECIFIC PASSKEY (from M-PESA Express)
     passkey: 'MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjYwMzE4MDE0MDQ0',
-    
-    // Safaricom sandbox test shortcode
     shortCode: '174379',
-    
-    // Environment: 'sandbox' for testing, 'production' for live
     environment: 'sandbox'
 };
 
-// Your site URL for callbacks
-const SITE_URL = 'https://gleeful-speculoos-7d9eff.netlify.app';
+const SITE_URL = 'https://tevin-tech.netlify.app';
+
+// CORS Proxy to bypass Safaricom's CORS restrictions
+const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Package selection
@@ -68,16 +61,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Get M-Pesa access token
+    // Get M-Pesa access token (with CORS proxy)
     async function getMpesaToken() {
         try {
             const credentials = btoa(`${MPESA_CONFIG.consumerKey}:${MPESA_CONFIG.consumerSecret}`);
             
-            const response = await fetch('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', {
+            // Use CORS proxy to bypass Safaricom's CORS restrictions
+            const tokenUrl = CORS_PROXY + 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+            
+            console.log('Fetching token from:', tokenUrl);
+            
+            const response = await fetch(tokenUrl, {
                 method: 'GET',
                 headers: { 
                     'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Origin': SITE_URL
                 }
             });
             
@@ -92,10 +91,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('No access token in response');
             }
             
+            console.log('✅ Token obtained successfully');
             return data.access_token;
             
         } catch (error) {
-            console.error('Token error:', error);
+            console.error('❌ Token error:', error);
             throw error;
         }
     }
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}`;
             
-            // Generate password: Base64(ShortCode + Passkey + Timestamp)
+            // Generate password
             const passwordString = MPESA_CONFIG.shortCode + MPESA_CONFIG.passkey + timestamp;
             const password = btoa(passwordString);
             
@@ -137,11 +137,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 TransactionDesc: `Payment for ${orderRef}`
             };
             
-            const response = await fetch('https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest', {
+            // Use CORS proxy for STK push as well
+            const stkUrl = CORS_PROXY + 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+            
+            const response = await fetch(stkUrl, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Origin': SITE_URL
                 },
                 body: JSON.stringify(stkPushRequest)
             });
@@ -211,14 +215,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending STK Push...';
                 submitBtn.disabled = true;
                 
-                const result = await initiateSTKPush(amount, phone, orderRef);
-                
-                if (result.success) {
-                    orderData.checkoutRequestID = result.checkoutRequestID;
-                    localStorage.setItem('currentOrder', JSON.stringify(orderData));
-                    window.location.href = 'payment-processing.html';
-                } else {
-                    alert('Payment failed: ' + result.error);
+                try {
+                    const result = await initiateSTKPush(amount, phone, orderRef);
+                    
+                    if (result.success) {
+                        orderData.checkoutRequestID = result.checkoutRequestID;
+                        localStorage.setItem('currentOrder', JSON.stringify(orderData));
+                        window.location.href = 'payment-processing.html';
+                    } else {
+                        alert('Payment failed: ' + result.error);
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    alert('Payment error: ' + error.message);
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                 }
