@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Payment · Tevin's Tech</title>
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* ===== PROCESSING PAGE SPECIFIC STYLES ===== */
+        :root {
+            --processing-bg: #ffffff;
+            --processing-text: #1e293b;
+            --processing-card: #ffffff;
+            --processing-border: #e2e8f0;
+            --processing-accent-light: #ede9fe;
+            --processing-spinner: #8b5cf6;
+            --processing-spinner-track: #e2e8f0;
+        }
+
+        .dark-mode {
+            --processing-bg: #0f172a;
+            --processing-text: #f1f5f9;
+            --processing-card: #1e293b;
+            --processing-border: #334155;
+            --processing-accent-light: #2e1b4d;
+            --processing-spinner: #a78bfa;
+            --processing-spinner-track: #334155;
+        }
+
+        body {
+            background-color: var(--processing-bg);
+            color: var(--processing-text);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .world-map-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.08;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .dark-mode .world-map-bg {
+            opacity: 0.12;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo .accent {
+            color: var(--accent);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+        }
+
+        .light-mode .dark-icon,
+        .dark-mode .light-icon {
+            display: none;
+        }
+
+        /* Processing Container */
+        .processing-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            min-height: 60vh;
+        }
+
+        .processing-card {
+            max-width: 500px;
+            width: 100%;
+            padding: 3rem 2rem;
+            background: var(--bg-secondary);
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: cardFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Spinner Animation */
+        .spinner-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid var(--processing-spinner-track);
+            border-top: 4px solid var(--accent);
+            border-right: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .pulse-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-out infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Title */
+        .processing-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--text-primary);
+        }
+
+        .processing-card h2 .accent {
+            color: var(--accent);
+        }
+
+        /* Instructions */
+        .instructions {
+            background: var(--accent-light);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .instructions i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            animation: ring 2s ease-in-out infinite;
+        }
+
+        @keyframes ring {
+            0%, 100% { transform: rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(10deg); }
+            20%, 40%, 60%, 80% { transform: rotate(-10deg); }
+        }
+
+        .instructions p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .instructions strong {
+            color: var(--accent);
+        }
+
+        /* Order Details */
+        .order-details {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .detail-value.highlight {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 50px;
+            color: #f59e0b;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-badge i {
+            animation: spin 2s linear infinite;
+        }
+
+        /* Info Text */
+        .info-text {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .info-text i {
+            color: var(--accent);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px var(--accent);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .processing-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .processing-card h2 {
+                font-size: 1.8rem;
+            }
+            
+            .instructions {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- World Map Background -->
+    <div class="world-map-bg"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
+            </div>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun light-icon"></i>
+                    <i class="fas fa-moon dark-icon"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Processing Content -->
+        <div class="processing-container">
+            <div class="processing-card">
+                <!-- Animated Spinner -->
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <div class="pulse-dot"></div>
+                </div>
+                
+                <h2>Processing Your <span class="accent">Payment</span></h2>
+                
+                <!-- Instructions -->
+                <div class="instructions">
+                    <i class="fas fa-mobile-alt"></i>
+                    <div>
+                        <p><strong>Check your phone</strong> for the M-Pesa STK push prompt and enter your PIN to complete payment.</p>
+                    </div>
+                </div>
+                
+                <!-- Order Details -->
+                <div class="order-details" id="orderDetails">
+                    <!-- Dynamically filled by JavaScript -->
+                    <div class="detail-row">
+                        <span class="detail-label">Loading order details...</span>
+                    </div>
+                </div>
+                
+                <!-- Status Info -->
+                <div class="info-text">
+                    <i class="fas fa-clock"></i>
+                    <span>This page will automatically redirect when payment is confirmed.</span>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="order-confirmation.html" class="btn btn-primary">
+                        <i class="fas fa-check-circle"></i> I've Paid
+                    </a>
+                    <a href="order.html" class="btn btn-outline">
+                        <i class="fas fa-times-circle"></i> Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
+            <div>Building systems that scale</div>
+            <div style="margin-top: 0.5rem; font-size: 0.85rem;">
+                © 2026 Tevin's Tech. All rights reserved.
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Theme Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+            }
+            
+            // Theme toggle
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    if (body.classList.contains('light-mode')) {
+                        body.classList.remove('light-mode');
+                        body.classList.add('dark-mode');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        body.classList.remove('dark-mode');
+                        body.classList.add('light-mode');
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            }
+            
+            // Load order details from localStorage
+            const order = JSON.parse(localStorage.getItem('currentOrder') || '{}');
+            const detailsDiv = document.getElementById('orderDetails');
+            
+            if (order.reference) {
+                // Format amount
+                const amount = order.amount || 45000;
+                const formattedAmount = 'KES ' + amount.toLocaleString();
+                
+                // Get package name
+                const packageName = order.package || 'Professional';
+                
+                // Create HTML for order details
+                detailsDiv.innerHTML = `
+                    <div class="detail-row">
+                        <span class="detail-label">Order Reference:</span>
+                        <span class="detail-value">${order.reference}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Package:</span>
+                        <span class="detail-value">${packageName}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Amount:</span>
+                        <span class="detail-value highlight">${formattedAmount}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value">
+                            <span class="status-badge">
+                                <i class="fas fa-spinner"></i> Awaiting Payment
+                            </span>
+                        </span>
+                    </div>
+                `;
+            } else {
+                // Fallback if no order found
+                detailsDiv.innerHTML = `
+                    <div class="detail-row">
+                        <span class="detail-label">Order Reference:</span>
+                        <span class="detail-value">TT-${Date.now().toString().slice(-8)}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Amount:</span>
+                        <span class="detail-value highlight">KES 45,000</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value">
+                            <span class="status-badge">
+                                <i class="fas fa-spinner"></i> Awaiting Payment
+                            </span>
+                        </span>
+                    </div>
+                `;
+            }
+            
+            // Auto-redirect after 30 seconds (for demo)
+            // In production, you would check payment status via API
+            setTimeout(() => {
+                // Check if we have a checkout request ID
+                if (order.checkoutRequestID) {
+                    // In a real implementation, you would query the payment status
+                    // For now, just redirect to confirmation
+                    window.location.href = 'order-confirmation.html';
+                }
+            }, 30000);
+            
+            // Manual check for payment (simulated)
+            const checkPaymentBtn = document.querySelector('.btn-primary');
+            if (checkPaymentBtn) {
+                checkPaymentBtn.addEventListener('click', function(e) {
+                    // You could add payment status check here
+                    // For now, just allow the link to work normally
+                });
+            }
+        });
+    </script>
+</body>
+</html>
