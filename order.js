@@ -1,21 +1,15 @@
-// ===== SAFARICOM DARAJA M-PESA INTEGRATION =====
-// FIXED URL AND FORMAT
+// ===== PAYSTACK PAYMENT INTEGRATION =====
+// COMPLETE REPLACEMENT FOR M-PESA - NO CORS ERRORS!
 
-const MPESA_CONFIG = {
-    consumerKey: '2Y1V7xDvU8WC3fZsQd1DVbyqYkJkqjYEtGLv9n9J55PCFIKS',
-    consumerSecret: 'ObhVj0tMD1gGjrGTcfTpAiXfNF0ZQnsLYzauGAGcrAtveqU9ddNFr47phVdmAfG9',
-    passkey: 'MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjYwMzE4MDE0MDQ0',
-    shortCode: '174379',
-    environment: 'sandbox'
+const PAYSTACK_CONFIG = {
+    publicKey: 'pk_test_742dfa8f8b8b05c532cb6af8a5787eaf74e3ab8d',
+    currency: 'KES'
 };
 
-const SITE_URL = 'https://tevin-t3c.netlify.app';
-
-// CORRECTED CORS Proxy URL format
-const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+const SITE_URL = 'https://tevin-tech.netlify.app';
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Package selection
+    // Package selection (keeping your existing design)
     const packageCards = document.querySelectorAll('.package-card');
     const selectedPackageInput = document.getElementById('selectedPackageInput');
     const summaryPackage = document.getElementById('summaryPackage');
@@ -51,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Payment method toggle
+    // Payment method toggle (keeping your existing UI)
     document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
         radio.addEventListener('change', function() {
             const mpesaInput = document.querySelector('.mpesa-input');
@@ -61,117 +55,81 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Get M-Pesa access token - FIXED URL
-    async function getMpesaToken() {
+    // Load Paystack script
+    function loadPaystackScript() {
+        return new Promise((resolve, reject) => {
+            if (window.PaystackPop) {
+                resolve();
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https://js.paystack.co/v1/inline.js';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+    
+    // Initialize Paystack payment
+    async function initializePaystackPayment(amount, email, orderRef, packageName) {
         try {
-            const credentials = btoa(`${MPESA_CONFIG.consumerKey}:${MPESA_CONFIG.consumerSecret}`);
+            await loadPaystackScript();
             
-            // CORRECT URL - make sure it's exactly this
-            const tokenUrl = CORS_PROXY + 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
-            
-            console.log('Fetching token from:', tokenUrl);
-            
-            const response = await fetch(tokenUrl, {
-                method: 'GET',
-                headers: { 
-                    'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest' // Add this for CORS proxy
+            const handler = PaystackPop.setup({
+                key: PAYSTACK_CONFIG.publicKey,
+                email: email,
+                amount: amount * 100, // Paystack uses kobo/cents (multiply by 100)
+                currency: PAYSTACK_CONFIG.currency,
+                ref: orderRef,
+                channels: ['mobile_money', 'card'], // Allow M-PESA and card
+                metadata: {
+                    package_name: packageName,
+                    custom_fields: [
+                        {
+                            display_name: "Package",
+                            variable_name: "package",
+                            value: packageName
+                        }
+                    ]
+                },
+                callback: function(response) {
+                    // Payment successful
+                    console.log('Payment successful:', response);
+                    
+                    // Save order data with payment reference
+                    const orderData = JSON.parse(localStorage.getItem('currentOrder') || '{}');
+                    orderData.paystackReference = response.reference;
+                    orderData.paymentStatus = 'completed';
+                    localStorage.setItem('currentOrder', JSON.stringify(orderData));
+                    
+                    // Redirect to success page
+                    window.location.href = 'payment-success.html?ref=' + response.reference;
+                },
+                onClose: function() {
+                    // User closed the payment window
+                    alert('Payment cancelled. You can try again when ready.');
+                    
+                    // Re-enable submit button
+                    const submitBtn = document.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Order & Pay';
+                        submitBtn.disabled = false;
+                    }
                 }
             });
             
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Response status:', response.status);
-                console.error('Response text:', errorText);
-                throw new Error(`HTTP ${response.status}: ${errorText || 'Unknown error'}`);
-            }
-            
-            const data = await response.json();
-            
-            if (!data.access_token) {
-                throw new Error('No access token in response');
-            }
-            
-            console.log('✅ Token obtained successfully');
-            return data.access_token;
+            handler.openIframe();
             
         } catch (error) {
-            console.error('❌ Token error:', error);
-            throw error;
-        }
-    }
-    
-    // Initiate STK Push
-    async function initiateSTKPush(amount, phone, orderRef) {
-        try {
-            const token = await getMpesaToken();
+            console.error('Paystack initialization error:', error);
+            alert('Failed to initialize payment. Please try again.');
             
-            // Format phone number
-            const formattedPhone = phone.replace(/^0+/, '254').replace(/^\+254/, '254');
-            
-            // Generate timestamp
-            const date = new Date();
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-            
-            const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}`;
-            
-            // Generate password
-            const passwordString = MPESA_CONFIG.shortCode + MPESA_CONFIG.passkey + timestamp;
-            const password = btoa(passwordString);
-            
-            const stkPushRequest = {
-                BusinessShortCode: MPESA_CONFIG.shortCode,
-                Password: password,
-                Timestamp: timestamp,
-                TransactionType: 'CustomerPayBillOnline',
-                Amount: Math.floor(amount),
-                PartyA: formattedPhone,
-                PartyB: MPESA_CONFIG.shortCode,
-                PhoneNumber: formattedPhone,
-                CallBackURL: `${SITE_URL}/api/mpesa-callback`,
-                AccountReference: orderRef,
-                TransactionDesc: `Payment for ${orderRef}`
-            };
-            
-            const stkUrl = CORS_PROXY + 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-            
-            const response = await fetch(stkUrl, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify(stkPushRequest)
-            });
-            
-            const data = await response.json();
-            
-            if (data.ResponseCode === '0') {
-                return {
-                    success: true,
-                    checkoutRequestID: data.CheckoutRequestID,
-                    message: 'STK Push sent'
-                };
-            } else {
-                return {
-                    success: false,
-                    error: data.errorMessage || 'STK Push failed',
-                    data: data
-                };
+            // Re-enable submit button
+            const submitBtn = document.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Order & Pay';
+                submitBtn.disabled = false;
             }
-        } catch (error) {
-            console.error('STK Push error:', error);
-            return { 
-                success: false, 
-                error: error.message || 'Failed to authenticate with M-Pesa' 
-            };
         }
     }
     
@@ -190,51 +148,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 amount = parseInt(priceText) || 45000;
             }
             
-            const orderRef = 'TT-' + Date.now().toString().slice(-8);
+            const orderRef = 'TT-' + Date.now().toString().slice(-8) + '-' + Math.floor(Math.random() * 1000);
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
+            
+            // Get customer details
+            const name = document.querySelector('input[name="name"]')?.value;
+            const email = document.querySelector('input[name="email"]')?.value;
+            const phone = document.querySelector('input[name="phone"]')?.value;
+            const company = document.querySelector('input[name="company"]')?.value;
+            
+            // Validate required fields
+            if (!name || !email) {
+                alert('Please fill in your name and email');
+                return;
+            }
             
             // Save order data
             const orderData = {
                 reference: orderRef,
                 amount: amount,
                 package: summaryPackage.textContent,
-                name: document.querySelector('input[name="name"]')?.value,
-                email: document.querySelector('input[name="email"]')?.value,
-                date: new Date().toISOString()
+                name: name,
+                email: email,
+                phone: phone,
+                company: company,
+                date: new Date().toISOString(),
+                projectType: document.querySelector('select[name="project_type"]')?.value,
+                description: document.querySelector('textarea[name="description"]')?.value
             };
             localStorage.setItem('currentOrder', JSON.stringify(orderData));
             
             if (paymentMethod === 'mpesa') {
-                const phone = document.getElementById('mpesaPhone')?.value;
+                const mpesaPhone = document.getElementById('mpesaPhone')?.value;
                 
-                if (!phone || !phone.match(/^(254|0)[0-9]{9}$/)) {
+                if (!mpesaPhone || !mpesaPhone.match(/^(254|0)[0-9]{9}$/)) {
                     alert('Please enter a valid M-Pesa phone number (e.g., 254712345678)');
                     return;
                 }
                 
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending STK Push...';
+                // Add phone to order data
+                orderData.phone = mpesaPhone;
+                localStorage.setItem('currentOrder', JSON.stringify(orderData));
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening Paystack...';
                 submitBtn.disabled = true;
                 
-                try {
-                    const result = await initiateSTKPush(amount, phone, orderRef);
-                    
-                    if (result.success) {
-                        orderData.checkoutRequestID = result.checkoutRequestID;
-                        localStorage.setItem('currentOrder', JSON.stringify(orderData));
-                        window.location.href = 'payment-processing.html';
-                    } else {
-                        alert('Payment failed: ' + result.error);
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    }
-                } catch (error) {
-                    alert('Payment error: ' + error.message);
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
+                // Initialize Paystack payment
+                await initializePaystackPayment(amount, email, orderRef, summaryPackage.textContent);
+                
             } else {
-                // Submit to Formspree for bank/PayPal
+                // For bank/PayPal, submit to Formspree
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
                 submitBtn.disabled = true;
                 
@@ -261,4 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    console.log('✅ Paystack integration ready');
 });
