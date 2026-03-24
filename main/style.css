@@ -1745,3 +1745,20 @@ h1, h2, h3, h4, .logo-text, .footer-logo {
         height: 150px;
     }
 }
+/* FORCE DARK MODE FOR PORTFOLIO - TEMPORARY FIX */
+.dark-mode .portfolio-item,
+.dark-mode .portfolio-image,
+.dark-mode .portfolio-details,
+.dark-mode .portfolio-tech span {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+}
+
+.dark-mode .portfolio-client {
+    color: var(--accent) !important;
+}
+
+.dark-mode .portfolio-description {
+    color: var(--text-secondary) !important;
+}
