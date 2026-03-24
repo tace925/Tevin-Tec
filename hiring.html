@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Our Team · Tevin's Tech</title>
+    <meta name="description" content="Join the Tevin's Tech team. We're hiring developers, designers, and tech enthusiasts to build amazing digital solutions together.">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="main/style.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Additional styles for hiring page */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .benefit-card {
+            background: var(--bg-secondary);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        
+        .benefit-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .benefit-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .benefit-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .job-card {
+            background: var(--bg-secondary);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .job-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .job-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+        
+        .job-badge {
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .job-type {
+            display: inline-block;
+            background: var(--bg-primary);
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .job-description {
+            color: var(--text-secondary);
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        
+        .job-requirements {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .job-requirements li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .job-requirements i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .apply-btn {
+            margin-top: 1rem;
+        }
+        
+        .application-form {
+            background: var(--bg-secondary);
+            border-radius: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            margin-top: 3rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .application-form h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .file-input {
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            width: 100%;
+        }
+        
+        .application-note {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="world-map-bg"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
+            </div>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="team.html">Team</a>
+                <a href="hiring.html" class="active">Careers</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contact.html">Contact</a>
+                <a href="order.html">Order</a>
+            </nav>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun light-icon"></i>
+                    <i class="fas fa-moon dark-icon"></i>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="team.html">Team</a>
+            <a href="hiring.html">Careers</a>
+            <a href="contact.html">Contact</a>
+            <a href="faq.html">FAQ</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="order.html">Order</a>
+        </div>
+
+        <!-- PAGE HEADER -->
+        <section class="page-header">
+            <h1 class="page-title">join our <span class="accent">team</span></h1>
+            <p class="page-subtitle">Build amazing things with people who love what they do</p>
+        </section>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title" style="font-size: 2.5rem;">🚀 Let's build <span class="accent">together</span></h1>
+                <p class="hero-description">
+                    We're a growing team of passionate developers, designers, and problem-solvers. 
+                    If you love coding, learning, and creating impactful digital solutions, 
+                    you might be the perfect fit for Tevin's Tech.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#openings" class="btn btn-primary">View Openings</a>
+                    <a href="#apply" class="btn btn-outline">Apply Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY JOIN US (BENEFITS) -->
+        <section class="why-section">
+            <h2 class="section-title">why work with <span class="accent">us?</span></h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Remote & Flexible</h3>
+                    <p>Work from anywhere. Flexible hours that fit your lifestyle.</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Learning Budget</h3>
+                    <p>Access to courses, books, and conferences to grow your skills.</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Supportive Team</h3>
+                    <p>Work with experienced developers who love mentoring.</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Real Impact</h3>
+                    <p>Your work helps real businesses grow and succeed.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CURRENT OPENINGS -->
+        <section id="openings" class="openings">
+            <h2 class="section-title">current <span class="accent">openings</span></h2>
+            
+            <!-- Job 1: Frontend Developer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <h3>Frontend Developer</h3>
+                    <span class="job-badge">🔥 Open</span>
+                </div>
+                <div>
+                    <span class="job-type">Part-time</span>
+                    <span class="job-type">Remote (Kenya)</span>
+                    <span class="job-type">Intern / Junior</span>
+                </div>
+                <p class="job-description">
+                    Build beautiful, responsive websites using HTML, CSS, and JavaScript. Work closely with designers and backend developers to create seamless user experiences.
+                </p>
+                <ul class="job-requirements">
+                    <li><i class="fas fa-check-circle"></i> Good knowledge of HTML/CSS/JavaScript</li>
+                    <li><i class="fas fa-check-circle"></i> Basic understanding of React or Vue is a plus</li>
+                    <li><i class="fas fa-check-circle"></i> Attention to detail and love for clean code</li>
+                    <li><i class="fas fa-check-circle"></i> Portfolio or GitHub profile (required)</li>
+                </ul>
+                <div class="apply-btn">
+                    <a href="#apply" class="btn btn-primary">Apply for this role →</a>
+                </div>
+            </div>
+
+            <!-- Job 2: Backend Developer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <h3>Backend Developer</h3>
+                    <span class="job-badge">🔥 Open</span>
+                </div>
+                <div>
+                    <span class="job-type">Part-time</span>
+                    <span class="job-type">Remote (Kenya)</span>
+                    <span class="job-type">Junior / Intern</span>
+                </div>
+                <p class="job-description">
+                    Build robust APIs, manage databases, and help scale our applications. Work with Python, Node.js, and MySQL/PostgreSQL.
+                </p>
+                <ul class="job-requirements">
+                    <li><i class="fas fa-check-circle"></i> Basic knowledge of Python or Node.js</li>
+                    <li><i class="fas fa-check-circle"></i> Understanding of databases (SQL)</li>
+                    <li><i class="fas fa-check-circle"></i> Problem-solving mindset</li>
+                    <li><i class="fas fa-check-circle"></i> Willingness to learn and grow</li>
+                </ul>
+                <div class="apply-btn">
+                    <a href="#apply" class="btn btn-primary">Apply for this role →</a>
+                </div>
+            </div>
+
+            <!-- Job 3: UI/UX Designer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <h3>UI/UX Designer</h3>
+                    <span class="job-badge">📅 Coming Soon</span>
+                </div>
+                <div>
+                    <span class="job-type">Freelance</span>
+                    <span class="job-type">Project-based</span>
+                </div>
+                <p class="job-description">
+                    Design beautiful, user-friendly interfaces for websites and web apps. Create wireframes, prototypes, and work with developers to bring designs to life.
+                </p>
+                <ul class="job-requirements">
+                    <li><i class="fas fa-check-circle"></i> Portfolio of web/app design work</li>
+                    <li><i class="fas fa-check-circle"></i> Familiar with Figma or Adobe XD</li>
+                    <li><i class="fas fa-check-circle"></i> Understanding of user-centered design</li>
+                </ul>
+                <div class="apply-btn">
+                    <a href="#apply" class="btn btn-outline">Send your portfolio</a>
+                </div>
+            </div>
+
+            <div class="help-text" style="text-align: center; margin-top: 2rem;">
+                <i class="fas fa-envelope"></i> Don't see a role that fits? Send us your CV anyway!
+            </div>
+        </section>
+
+        <!-- APPLICATION FORM -->
+        <section id="apply" class="application-section">
+            <h2 class="section-title">send your <span class="accent">application</span></h2>
+            <div class="application-form">
+                <h3>✨ Apply to join Tevin's Tech</h3>
+                <form id="applicationForm" action="https://formspree.io/f/xvzwqqbq" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="_subject" value="New Job Application - Tevin's Tech">
+                    <input type="hidden" name="_template" value="table">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" name="name" placeholder="Tevin Mulinge" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" name="email" placeholder="tevin@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" placeholder="+254 700 000 000">
+                        </div>
+                        <div class="form-group">
+                            <label>Position Applying For *</label>
+                            <select name="position" required>
+                                <option value="" disabled selected>Select a position</option>
+                                <option value="frontend">Frontend Developer</option>
+                                <option value="backend">Backend Developer</option>
+                                <option value="designer">UI/UX Designer</option>
+                                <option value="intern">General Internship</option>
+                                <option value="other">Other / Open Application</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Portfolio / GitHub / LinkedIn Link</label>
+                        <input type="url" name="portfolio" placeholder="https://github.com/yourusername">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tell us about yourself and why you'd be a great fit *</label>
+                        <textarea name="message" rows="5" placeholder="Share your experience, skills, and what excites you about tech..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Upload CV (PDF or DOCX)</label>
+                        <input type="file" name="resume" class="file-input" accept=".pdf,.docx">
+                        <small style="color: var(--text-tertiary);">Optional – you can also email your CV separately</small>
+                    </div>
+                    
+                    <input type="text" name="_gotcha" style="display:none">
+                    
+                    <button type="submit" class="submit-order">
+                        <i class="fas fa-paper-plane"></i> Submit Application
+                    </button>
+                    
+                    <div class="application-note">
+                        <i class="fas fa-info-circle"></i> We'll review your application and get back to you within 5-7 working days. If you have any questions, email us at <strong>tevinmulinge48@gmail.com</strong>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
+                <p>Building systems that scale · One line of code at a time</p>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="team.html">Team</a>
+                    <a href="hiring.html">Careers</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="faq.html">FAQ</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="order.html">Order</a>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/tace925" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://twitter.com/mulingeTev81504" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="developer-credit">
+                    <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong> · © <span id="current-year">2026</span> Tevin's Tech
+                </div>
+                <div class="copyright">
+                    Made with <i class="fas fa-heart" style="color: var(--accent);"></i> and <i class="fas fa-mug-hot"></i> in Nairobi
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="main/script.js"></script>
+</body>
+</html>

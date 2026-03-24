@@ -6,39 +6,33 @@
     <title>Order a Website · Tevin's Tech</title>
     <meta name="description" content="Order custom websites, portfolios, and business systems from Tevin's Tech. Pay via M-Pesa.">
     
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Order Page Specific CSS -->
+    <link rel="stylesheet" href="../main/style.css">
     <link rel="stylesheet" href="order.css">
-    
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="light-mode">
-    <!-- World Map Background -->
     <div class="world-map-bg"></div>
     
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="logo">
                 <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
             </div>
             <nav class="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="services.html">Services</a>
-                <a href="portfolio.html">Portfolio</a>
-                <a href="team.html">Team</a>
-                <a href="contact.html">Contact</a>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../services.html">Services</a>
+                <a href="../portfolio.html">Portfolio</a>
+                <a href="../team.html">Team</a>
+                <a href="../faq.html">FAQ</a>
+                <a href="../contact.html">Contact</a>
                 <a href="order.html" class="active">Order</a>
+                <a href="../hiring.html">Careers</a>
+                <a href="../client/login.html">Client Portal</a>
             </nav>
             <div class="theme-toggle-container">
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <button id="theme-toggle" class="theme-toggle">
                     <i class="fas fa-sun light-icon"></i>
                     <i class="fas fa-moon dark-icon"></i>
                 </button>
@@ -48,40 +42,33 @@
             </button>
         </div>
 
-        <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobile-nav">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="services.html">Services</a>
-            <a href="portfolio.html">Portfolio</a>
-            <a href="team.html">Team</a>
-            <a href="contact.html">Contact</a>
+            <a href="../index.html">Home</a>
+            <a href="../about.html">About</a>
+            <a href="../services.html">Services</a>
+            <a href="../portfolio.html">Portfolio</a>
+            <a href="../team.html">Team</a>
+            <a href="../contact.html">Contact</a>
+            <a href="../faq.html">FAQ</a>
+            <a href="../privacy.html">Privacy</a>
             <a href="order.html">Order</a>
-            <a href="faq.html">FAQ</a>
-            <a href="privacy.html">Privacy</a>
+            <a href="../hiring.html">Careers</a>
+            <a href="../client/login.html">Client Portal</a>
+            <a href="admin-orders.html" class="admin-link">Admin</a>
         </div>
 
-        <!-- ORDER PAGE HEADER -->
         <div class="order-header">
             <h1>order a <span class="accent">website</span></h1>
             <p>Tell me what you need and I'll build it for you</p>
         </div>
 
-        <!-- ORDER CONTAINER -->
         <div class="order-container">
-            <!-- LEFT SIDEBAR - PACKAGES -->
             <div class="packages-sidebar">
                 <h2>choose a <span class="accent">package</span></h2>
                 
-                <!-- Package 1: Basic -->
                 <div class="package-card" id="package-basic">
-                    <div class="package-name">
-                        <i class="fas fa-rocket"></i>
-                        Basic Website
-                    </div>
-                    <div class="package-price">
-                        KES 25,000 <span>starting</span>
-                    </div>
+                    <div class="package-name"><i class="fas fa-rocket"></i> Basic Website</div>
+                    <div class="package-price">KES 25,000 <span>starting</span></div>
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> Up to 3 pages</li>
                         <li><i class="fas fa-check"></i> Mobile responsive</li>
@@ -91,16 +78,10 @@
                     </ul>
                 </div>
                 
-                <!-- Package 2: Professional (Popular) -->
                 <div class="package-card selected" id="package-professional">
                     <div class="popular-badge">Most Popular</div>
-                    <div class="package-name">
-                        <i class="fas fa-briefcase"></i>
-                        Professional
-                    </div>
-                    <div class="package-price">
-                        KES 45,000 <span>starting</span>
-                    </div>
+                    <div class="package-name"><i class="fas fa-briefcase"></i> Professional</div>
+                    <div class="package-price">KES 45,000 <span>starting</span></div>
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> Up to 7 pages</li>
                         <li><i class="fas fa-check"></i> Mobile responsive</li>
@@ -112,15 +93,9 @@
                     </ul>
                 </div>
                 
-                <!-- Package 3: Enterprise -->
                 <div class="package-card" id="package-enterprise">
-                    <div class="package-name">
-                        <i class="fas fa-crown"></i>
-                        Enterprise
-                    </div>
-                    <div class="package-price">
-                        KES 80,000+ <span>custom</span>
-                    </div>
+                    <div class="package-name"><i class="fas fa-crown"></i> Enterprise</div>
+                    <div class="package-price">KES 80,000+ <span>custom</span></div>
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> Unlimited pages</li>
                         <li><i class="fas fa-check"></i> Custom features</li>
@@ -137,38 +112,31 @@
                 </div>
             </div>
             
-            <!-- RIGHT SIDE - ORDER FORM -->
             <div class="order-form">
                 <h2>project <span class="accent">details</span></h2>
                 
                 <form id="orderForm" action="https://formspree.io/f/xvzwqqbq" method="POST">
-                    <!-- Hidden fields -->
                     <input type="hidden" name="_subject" value="New Website Order from Tevin's Tech">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="selected_package" id="selectedPackageInput" value="professional">
                     
-                    <!-- SECTION 1: CONTACT INFORMATION -->
                     <div class="form-section">
                         <h3><i class="fas fa-user"></i> Your Information</h3>
-                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Full Name *</label>
-                                <input type="text" name="name" placeholder="Tevin Mulinge" required>
+                                <input type="text" name="name" placeholder="John Doe" required>
                             </div>
-                            
                             <div class="form-group">
                                 <label>Email *</label>
-                                <input type="email" name="email" placeholder="Tevin@example.com" required>
+                                <input type="email" name="email" placeholder="john@example.com" required>
                             </div>
                         </div>
-                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Phone (optional)</label>
                                 <input type="tel" name="phone" placeholder="+254 700 000 000">
                             </div>
-                            
                             <div class="form-group">
                                 <label>Company/Business Name</label>
                                 <input type="text" name="company" placeholder="Your Business">
@@ -176,10 +144,8 @@
                         </div>
                     </div>
                     
-                    <!-- SECTION 2: PROJECT DETAILS -->
                     <div class="form-section">
                         <h3><i class="fas fa-pencil-ruler"></i> Project Details</h3>
-                        
                         <div class="form-group">
                             <label>Project Type *</label>
                             <select name="project_type" required>
@@ -192,17 +158,14 @@
                                 <option value="custom">Custom Web Application</option>
                             </select>
                         </div>
-                        
                         <div class="form-group">
                             <label>Project Name / Title</label>
                             <input type="text" name="project_name" placeholder="e.g., My Photography Portfolio">
                         </div>
-                        
                         <div class="form-group">
                             <label>Tell me about your project *</label>
                             <textarea name="description" rows="4" placeholder="Describe what you need, your goals, and any specific features..." required></textarea>
                         </div>
-                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Preferred timeline</label>
@@ -213,7 +176,6 @@
                                     <option value="planning">Just planning / not sure</option>
                                 </select>
                             </div>
-                            
                             <div class="form-group">
                                 <label>Do you have content?</label>
                                 <select name="content_readiness">
@@ -225,45 +187,36 @@
                         </div>
                     </div>
                     
-                    <!-- SECTION 3: FEATURES & EXTRAS -->
                     <div class="form-section">
                         <h3><i class="fas fa-puzzle-piece"></i> Features & Extras</h3>
-                        
                         <div class="checkbox-group">
                             <input type="checkbox" name="feature_darkmode" id="darkmode" checked>
                             <label for="darkmode">Dark mode 🌙</label>
                         </div>
-                        
                         <div class="checkbox-group">
                             <input type="checkbox" name="feature_cms" id="cms">
                             <label for="cms">Content Management System (CMS)</label>
                         </div>
-                        
                         <div class="checkbox-group">
                             <input type="checkbox" name="feature_blog" id="blog">
                             <label for="blog">Blog / News section</label>
                         </div>
-                        
                         <div class="checkbox-group">
                             <input type="checkbox" name="feature_seo" id="seo" checked>
                             <label for="seo">SEO optimization</label>
                         </div>
-                        
                         <div class="checkbox-group">
                             <input type="checkbox" name="feature_analytics" id="analytics" checked>
                             <label for="analytics">Google Analytics setup</label>
                         </div>
-                        
                         <div class="checkbox-group">
                             <input type="checkbox" name="feature_payments" id="payments">
                             <label for="payments">Payment integration (M-Pesa, PayPal)</label>
                         </div>
                     </div>
                     
-                    <!-- SECTION 4: BUDGET -->
                     <div class="form-section">
                         <h3><i class="fas fa-coins"></i> Budget</h3>
-                        
                         <div class="budget-slider">
                             <input type="range" name="budget" id="budgetSlider" min="15000" max="200000" step="5000" value="45000">
                             <div class="budget-values">
@@ -272,68 +225,43 @@
                                 <span>KES 200k+</span>
                             </div>
                         </div>
-                        
                         <div class="form-group">
                             <label>Additional notes (optional)</label>
                             <textarea name="additional_notes" rows="2" placeholder="Any other requirements..."></textarea>
                         </div>
                     </div>
                     
-                    <!-- SECTION 5: PAYMENT METHOD -->
                     <div class="form-section">
                         <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
-                        
                         <div class="payment-options">
                             <div class="payment-option">
                                 <input type="radio" name="payment_method" id="pay-mpesa" value="mpesa" checked>
-                                <label for="pay-mpesa">
-                                    <i class="fas fa-mobile-alt"></i> M-Pesa (STK Push)
-                                </label>
-                                <div class="mpesa-input" style="margin-top: 1rem;">
+                                <label for="pay-mpesa"><i class="fas fa-mobile-alt"></i> M-Pesa (STK Push)</label>
+                                <div class="mpesa-input">
                                     <label>M-Pesa Phone Number *</label>
-                                    <input type="tel" name="mpesa_phone" id="mpesaPhone" placeholder="254743936403" required>
-                                    <small style="color: var(--text-tertiary);">Format: 254743936403 (no leading zero)</small>
+                                    <input type="tel" name="mpesa_phone" id="mpesaPhone" placeholder="254712345678" required>
+                                    <small>Format: 254712345678 (no leading zero)</small>
                                 </div>
                             </div>
-                            
                             <div class="payment-option">
                                 <input type="radio" name="payment_method" id="pay-bank" value="bank">
-                                <label for="pay-bank">
-                                    <i class="fas fa-university"></i> Bank Transfer
-                                </label>
+                                <label for="pay-bank"><i class="fas fa-university"></i> Bank Transfer</label>
                             </div>
-                            
                             <div class="payment-option">
                                 <input type="radio" name="payment_method" id="pay-paypal" value="paypal">
-                                <label for="pay-paypal">
-                                    <i class="fab fa-paypal"></i> PayPal
-                                </label>
+                                <label for="pay-paypal"><i class="fab fa-paypal"></i> PayPal</label>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- ORDER SUMMARY -->
                     <div class="order-summary">
-                        <div class="summary-row">
-                            <span>Selected Package:</span>
-                            <span id="summaryPackage">Professional</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Base Price:</span>
-                            <span id="summaryPrice">KES 45,000</span>
-                        </div>
-                        <div class="summary-row summary-total">
-                            <span>Estimated Total:</span>
-                            <span id="summaryTotal">KES 45,000</span>
-                        </div>
+                        <div class="summary-row"><span>Selected Package:</span><span id="summaryPackage">Professional</span></div>
+                        <div class="summary-row"><span>Base Price:</span><span id="summaryPrice">KES 45,000</span></div>
+                        <div class="summary-row summary-total"><span>Estimated Total:</span><span id="summaryTotal">KES 45,000</span></div>
                     </div>
                     
-                    <!-- Honeypot -->
                     <input type="text" name="_gotcha" style="display:none">
-                    
-                    <button type="submit" class="submit-order">
-                        <i class="fas fa-paper-plane"></i> Submit Order & Pay
-                    </button>
+                    <button type="submit" class="submit-order"><i class="fas fa-paper-plane"></i> Submit Order & Pay</button>
                     
                     <div class="payment-methods">
                         <span>Secure payments via:</span>
@@ -344,27 +272,28 @@
             </div>
         </div>
 
-        <!-- FOOTER -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
                 <p>Building systems that scale</p>
                 <div class="footer-links">
-                    <a href="index.html">Home</a>
-                    <a href="about.html">About</a>
-                    <a href="services.html">Services</a>
-                    <a href="portfolio.html">Portfolio</a>
-                    <a href="team.html">Team</a>
-                    <a href="contact.html">Contact</a>
+                    <a href="../index.html">Home</a>
+                    <a href="../about.html">About</a>
+                    <a href="../services.html">Services</a>
+                    <a href="../portfolio.html">Portfolio</a>
+                    <a href="../team.html">Team</a>
+                    <a href="../contact.html">Contact</a>
+                    <a href="../faq.html">FAQ</a>
+                    <a href="../privacy.html">Privacy</a>
                     <a href="order.html">Order</a>
-                    <a href="faq.html">FAQ</a>
-                    <a href="privacy.html">Privacy</a>
+                    <a href="../hiring.html">Careers</a>
+                    <a href="../client/login.html">Client Portal</a>
                 </div>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/tace925" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com/mulingeTev81504" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
                 <div class="developer-credit">
                     <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong>
@@ -376,10 +305,7 @@
         </footer>
     </div>
 
-    <!-- Main JavaScript -->
-    <script src="script.js"></script>
-    
-    <!-- Order Page JavaScript -->
+    <script src="../main/script.js"></script>
     <script src="order.js"></script>
 </body>
 </html>

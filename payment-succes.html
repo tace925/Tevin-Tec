@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful · Tevin's Tech</title>
+    <link rel="stylesheet" href="main/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .success-container {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .success-card {
+            max-width: 600px;
+            padding: 3rem;
+            background: var(--bg-secondary);
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+            animation: pop 0.5s ease;
+        }
+        
+        .success-card h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-details {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .payment-details p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="world-map-bg"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="logo">TEVIN'S<span class="accent">TECH</span></div>
+        </div>
+        
+        <div class="success-container">
+            <div class="success-card">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1>Payment <span class="accent">Successful!</span></h1>
+                <p>Thank you for your order. Your payment has been received.</p>
+                
+                <div class="payment-details" id="paymentDetails">
+                    <!-- Filled by JavaScript -->
+                </div>
+                
+                <p>I'll email you within 24 hours to discuss your project details.</p>
+                
+                <div class="action-buttons">
+                    <a href="index.html" class="btn btn-primary">Return Home</a>
+                    <a href="portfolio.html" class="btn btn-outline">View Portfolio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Display payment details
+        const order = JSON.parse(localStorage.getItem('currentOrder') || '{}');
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref') || order.paystackReference || 'N/A';
+        
+        document.getElementById('paymentDetails').innerHTML = `
+            <p><strong>Order Reference:</strong> ${order.reference || 'N/A'}</p>
+            <p><strong>Package:</strong> ${order.package || 'Professional'}</p>
+            <p><strong>Amount:</strong> KES ${order.amount?.toLocaleString() || '45,000'}</p>
+            <p><strong>Payment Reference:</strong> ${ref}</p>
+        `;
+    </script>
+</body>
+</html>

@@ -6,8 +6,8 @@
     <title>Portfolio · Tevin's Tech</title>
     <meta name="description" content="View our recent projects - investment portfolios, culinary sites, and business systems.">
     
-    <!-- CSS - SAME FILE -->
-    <link rel="stylesheet" href="style.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="main/style.css">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,12 +15,11 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="light-mode">
-    <!-- World Map Background -->
+<body>
     <div class="world-map-bg"></div>
     
     <div class="container">
-        <!-- Header (SAME AS INDEX) -->
+        <!-- Header -->
         <div class="header">
             <div class="logo">
                 <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
@@ -33,6 +32,8 @@
                 <a href="team.html">Team</a>
                 <a href="faq.html">FAQ</a>
                 <a href="contact.html">Contact</a>
+                <a href="order.html">Order</a>
+                <a href="hiring.html">Careers</a>
             </nav>
             <div class="theme-toggle-container">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
@@ -55,6 +56,7 @@
             <a href="contact.html">Contact</a>
             <a href="faq.html">FAQ</a>
             <a href="privacy.html">Privacy</a>
+            <a href="order.html">Order</a>
         </div>
 
         <!-- PAGE HEADER -->
@@ -63,19 +65,22 @@
             <p class="page-subtitle">Recent projects we're proud of</p>
         </section>
 
-        <!-- PORTFOLIO GRID -->
+        <!-- PORTFOLIO GRID WITH REAL PROFILE IMAGES -->
         <section class="portfolio-grid-full">
-            <!-- Project 1: Paul - Investment Portfolio -->
+            
+            <!-- Project 1: Paul's Investment Portfolio -->
             <div class="portfolio-item">
-                <div class="portfolio-image">📊</div>
+                <div class="portfolio-image">
+                    <img src="image/paul.png" alt="Paul Mutuku Kingo'la" onerror="this.parentNode.innerHTML='📊'">
+                </div>
                 <div class="portfolio-details">
                     <h2>Investment Portfolio</h2>
                     <p class="portfolio-client">Paul Mutuku Kingo'la</p>
-                    <p class="portfolio-category">Personal Portfolio · Investor</p>
+                    <p class="portfolio-category">Strategic Investor · Business Architect · Visionary</p>
                     <p class="portfolio-description">
-                        A professional portfolio showcasing Paul's investments, track record, and credibility. 
-                        Features include dark mode, metrics dashboard, testimonial sections, and a clean, 
-                        professional design that impresses potential partners.
+                        "Building empires, one investment at a time." From the classrooms of Mbooni Boys' to the halls of USIU, 
+                        my journey has been defined by one mission: identify opportunities, invest wisely, create lasting value. 
+                        With a degree in Business and an eye for potential, I build enterprises that stand.
                     </p>
                     <div class="portfolio-tech">
                         <span>HTML/CSS</span>
@@ -87,17 +92,18 @@
                 </div>
             </div>
 
-            <!-- Project 2: Trizah - Triza's Compendium (UPDATED) -->
+            <!-- Project 2: Triza's Compendium -->
             <div class="portfolio-item">
-                <div class="portfolio-image">🍳</div>
+                <div class="portfolio-image">
+                    <img src="image/Triza.png" alt="Triza Njeri" onerror="this.parentNode.innerHTML='🍳'">
+                </div>
                 <div class="portfolio-details">
                     <h2>Triza's Compendium</h2>
                     <p class="portfolio-client">Triza Njeri</p>
-                    <p class="portfolio-category">Food Creator · Chef Portfolio</p>
+                    <p class="portfolio-category">Culinary Creator · Food Innovator · Dancing Chef</p>
                     <p class="portfolio-description">
-                        A warm, inviting portfolio for a culinary creator featuring recipe collections, 
-                        kitchen updates, music integration, and a beautiful food-themed design that reflects 
-                        her personality and work.
+                        "I turn fresh ingredients into unforgettable experiences. Dancing through life, one recipe at a time. 
+                        My kitchen is my stage, and every dish tells a story. I dance, therefore I cook."
                     </p>
                     <div class="portfolio-tech">
                         <span>HTML/CSS</span>
@@ -109,17 +115,19 @@
                 </div>
             </div>
 
-            <!-- Project 3: Tevin - Developer Portfolio -->
+            <!-- Project 3: Tevin's Developer Portfolio -->
             <div class="portfolio-item">
-                <div class="portfolio-image">💼</div>
+                <div class="portfolio-image">
+                    <img src="image/tevin.png" alt="Tevin Mulinge" onerror="this.parentNode.innerHTML='💼'">
+                </div>
                 <div class="portfolio-details">
                     <h2>Developer Portfolio</h2>
                     <p class="portfolio-client">Tevin Mulinge</p>
-                    <p class="portfolio-category">Personal Portfolio · Developer</p>
+                    <p class="portfolio-category">Computer Science Student · C++ · Python · JavaScript</p>
                     <p class="portfolio-description">
-                        A modern developer portfolio showcasing skills, projects, and experience. Features 
-                        include dark mode, project galleries, and a clean, professional design that attracts 
-                        potential clients and employers.
+                        I'm a CS student in Nairobi who transforms complex algorithms into real-world solutions. 
+                        Whether it's building bookshop systems in C++ or experimenting with AI, I approach every project 
+                        with one goal: build things that actually work and help people.
                     </p>
                     <div class="portfolio-tech">
                         <span>HTML/CSS</span>
@@ -147,14 +155,14 @@
             </div>
         </section>
 
-        <!-- CTA -->
+        <!-- CTA SECTION -->
         <section class="cta">
             <h2>want your project <span class="accent">featured?</span></h2>
             <p>Let's build something amazing together</p>
             <a href="contact.html" class="btn btn-primary btn-large">get started</a>
         </section>
 
-        <!-- FOOTER (SAME AS INDEX) -->
+        <!-- FOOTER -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
@@ -168,12 +176,14 @@
                     <a href="contact.html">Contact</a>
                     <a href="faq.html">FAQ</a>
                     <a href="privacy.html">Privacy</a>
+                    <a href="order.html">Order</a>
+                    <a href="hiring.html">Careers</a>
                 </div>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/tace925" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com/mulingeTev81504" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
                 <div class="developer-credit">
                     <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong>
@@ -185,7 +195,41 @@
         </footer>
     </div>
 
-    <!-- JavaScript - SAME FILE -->
-    <script src="script.js"></script>
+    <!-- JavaScript for Dark Mode + Mobile Menu -->
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                body.classList.add('dark-mode');
+            }
+        }
+
+        function toggleTheme() {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Initialize theme when page loads
+        window.addEventListener('load', initTheme);
+
+        // Mobile Menu (keeping your existing functionality)
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>

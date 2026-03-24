@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="site-title">Tevin's Tech · Programming & Systems Development</title>
-    <meta name="description" content="Professional programming services - custom websites, business systems, and digital solutions by Tevin and his team.">
+    <title>Tevin's Tech · Programming & Systems Development</title>
+    <meta name="description" content="Professional web development, software development, and IT consulting services in Nairobi. Custom websites, business systems, and digital solutions by Tevin's Tech.">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="main/style.css">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -16,14 +16,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="light-mode">
-    <!-- World Map Background (Now matching about.html) -->
     <div class="world-map-bg"></div>
     
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="logo">
-                <span class="logo-text" id="site-logo">TEVIN'S<span class="accent">TECH</span></span>
+                <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
             </div>
             <nav class="desktop-nav">
                 <a href="index.html" class="active">Home</a>
@@ -33,7 +31,9 @@
                 <a href="team.html">Team</a>
                 <a href="faq.html">FAQ</a>
                 <a href="contact.html">Contact</a>
-                <a href="order.html">Order</a>
+                <a href="order/order.html">Order</a>
+                <a href="hiring.html">Careers</a>
+                <a href="client/login.html">Client Portal</a>
             </nav>
             <div class="theme-toggle-container">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
@@ -46,7 +46,6 @@
             </button>
         </div>
 
-        <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobile-nav">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
@@ -56,7 +55,10 @@
             <a href="contact.html">Contact</a>
             <a href="faq.html">FAQ</a>
             <a href="privacy.html">Privacy</a>
-            <a href="admin/index.html" class="admin-link">Admin</a>
+            <a href="order/order.html">Order</a>
+            <a href="hiring.html">Careers</a>
+            <a href="client/login.html">Client Portal</a>
+            <a href="order/admin-orders.html" class="admin-link">Admin</a>
         </div>
 
         <!-- HERO SECTION -->
@@ -96,26 +98,32 @@
         <!-- FEATURED WORK -->
         <section class="featured-work">
             <h2 class="section-title">recent <span class="accent">projects</span></h2>
-            <div class="work-grid" id="projects-grid">
+            <div class="work-grid">
                 <div class="work-card">
-                    <div class="work-image">📊</div>
+                    <div class="work-image">
+                        <img src="image/paul.png" alt="Paul Mutuku Kingo'la" class="project-img" onerror="this.parentNode.innerHTML='📊'">
+                    </div>
                     <h3>Investment Portfolio</h3>
                     <p class="work-client">Paul Mutuku Kingo'la</p>
-                    <p class="work-desc">A professional portfolio showcasing investments and credibility.</p>
+                    <p class="work-desc">Strategic Investor · Business Architect · "Building empires, one investment at a time."</p>
                     <a href="https://paul-investment-portfolio.vercel.app/" target="_blank" class="work-link">view project →</a>
                 </div>
                 <div class="work-card">
-                    <div class="work-image">🍳</div>
+                    <div class="work-image">
+                        <img src="image/Triza.png" alt="Triza Njeri" class="project-img" onerror="this.parentNode.innerHTML='🍳'">
+                    </div>
                     <h3>Triza's Compendium</h3>
                     <p class="work-client">Triza Njeri</p>
-                    <p class="work-desc">A warm culinary portfolio featuring recipes and kitchen stories.</p>
-                    <a href="https://trizah-s-compendium.vercel.app/" target="_blank" class="work-link">view project →</a>
+                    <p class="work-desc">Culinary Creator · Food Innovator · "I dance, therefore I cook."</p>
+                    <a href="https://triza-s-compendium.vercel.app/" target="_blank" class="work-link">view project →</a>
                 </div>
                 <div class="work-card">
-                    <div class="work-image">💼</div>
+                    <div class="work-image">
+                        <img src="image/tevin.png" alt="Tevin Mulinge" class="project-img" onerror="this.parentNode.innerHTML='💼'">
+                    </div>
                     <h3>Developer Portfolio</h3>
                     <p class="work-client">Tevin Mulinge</p>
-                    <p class="work-desc">A modern developer portfolio showcasing skills and projects.</p>
+                    <p class="work-desc">CS Student · JavaScript Developer · "Debugging since 2022 | Fixed a segfault at 3am with cold chai."</p>
                     <a href="https://tevin-briefcase.vercel.app/" target="_blank" class="work-link">view project →</a>
                 </div>
             </div>
@@ -131,17 +139,58 @@
                 <div class="service-card">
                     <i class="fas fa-laptop-code"></i>
                     <h3>Websites & Portfolios</h3>
-                    <p>Custom-coded sites that stand out. No templates, no cookie-cutter designs. Perfect for professionals, entrepreneurs, and creatives.</p>
+                    <p>Custom-coded sites that stand out. No templates, no cookie-cutter designs.</p>
                 </div>
                 <div class="service-card">
                     <i class="fas fa-building"></i>
                     <h3>Business Systems</h3>
-                    <p>Custom software for inventory, management, and operations. Built to streamline your workflow and grow with your business.</p>
+                    <p>Custom software for inventory, management, and operations.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-chalkboard-user"></i>
+                    <h3>IT Consulting</h3>
+                    <p>Strategic technology advice to help your business grow.</p>
                 </div>
                 <div class="service-card">
                     <i class="fas fa-cogs"></i>
                     <h3>Custom Development</h3>
-                    <p>Have a unique idea? We'll build it. From web apps to interactive experiences — if you can imagine it, we can code it.</p>
+                    <p>Have a unique idea? We'll build it.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Maintenance & Support</h3>
+                    <p>Ongoing updates, security patches, and technical support.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW WE WORK -->
+        <section class="process-section">
+            <h2 class="section-title">how we <span class="accent">work</span></h2>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-phone-alt step-icon"></i>
+                    <h4>Discovery Call</h4>
+                    <p>We learn about your business needs, goals, and vision.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-file-alt step-icon"></i>
+                    <h4>Strategy & Quote</h4>
+                    <p>We propose a solution, timeline, and provide transparent pricing.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-code step-icon"></i>
+                    <h4>Development</h4>
+                    <p>We build your solution with clean code and weekly updates.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <i class="fas fa-rocket step-icon"></i>
+                    <h4>Launch & Support</h4>
+                    <p>We deploy your project and provide ongoing maintenance.</p>
                 </div>
             </div>
         </section>
@@ -150,34 +199,20 @@
         <section class="founder">
             <div class="founder-grid">
                 <div class="founder-image">
-                    <img src="founder.jpg" alt="Tevin Mulinge" class="profile-image" id="profile-img">
+                    <img src="image/founder.jpg" alt="Tevin Mulinge" class="profile-image" id="profile-img">
                     <div class="image-placeholder" id="profile-placeholder" style="display: none;">
                         <i class="fas fa-user-circle"></i>
                     </div>
                 </div>
                 <div class="founder-content">
                     <h2>meet the founder</h2>
-                    <h3 id="founder-name">I'm Tevin Mulinge</h3>
-                    <p id="founder-bio">
-                        Computer science student · JavaScript developer · Problem solver. I started building portfolios for entrepreneurs, 
-                        and today I lead a team of developers who share one mission: build things that actually work and help people.
-                    </p>
-                    <p class="fun-fact">
-                        <i class="fas fa-mug-hot"></i> Debugging since 2022 · I once fixed a segfault at 3am and celebrated with cold chai
-                    </p>
+                    <h3>I'm Tevin Mulinge</h3>
+                    <p>Computer science student · JavaScript developer · Problem solver. I started building portfolios for entrepreneurs, and today I lead a team of developers who share one mission: build things that actually work and help people.</p>
+                    <p class="fun-fact"><i class="fas fa-mug-hot"></i> Debugging since 2022 · I once fixed a segfault at 3am and celebrated with cold chai</p>
                     <div class="founder-stats">
-                        <div class="stat">
-                            <span class="stat-number">3+</span>
-                            <span class="stat-label">Years Coding</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">5+</span>
-                            <span class="stat-label">Team Members</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">50+</span>
-                            <span class="stat-label">Projects</span>
-                        </div>
+                        <div class="stat"><span class="stat-number">3+</span><span class="stat-label">Years Coding</span></div>
+                        <div class="stat"><span class="stat-number">5+</span><span class="stat-label">Team Members</span></div>
+                        <div class="stat"><span class="stat-number">50+</span><span class="stat-label">Projects</span></div>
                     </div>
                     <a href="about.html" class="btn btn-secondary">my story →</a>
                 </div>
@@ -187,35 +222,26 @@
         <!-- TESTIMONIALS -->
         <section class="testimonials">
             <h2 class="section-title">what clients <span class="accent">say</span></h2>
-            <div class="testimonials-grid" id="testimonials-grid">
+            <div class="testimonials-grid">
                 <div class="testimonial-card">
                     <i class="fas fa-quote-left"></i>
                     <p>"Tevin built my investment portfolio site and I've gotten so many compliments. Clean, professional, and exactly what I needed."</p>
-                    <div class="client">
-                        <strong>Paul Mutuku</strong>
-                        <span>Investor</span>
-                    </div>
+                    <div class="client"><strong>Paul Mutuku</strong><span>Investor</span></div>
                 </div>
                 <div class="testimonial-card">
                     <i class="fas fa-quote-left"></i>
                     <p>"My culinary portfolio feels like home. Clients love the design and I've gotten catering inquiries through the site."</p>
-                    <div class="client">
-                        <strong>Triza Njeri</strong>
-                        <span>Chef & Food Creator</span>
-                    </div>
+                    <div class="client"><strong>Triza Njeri</strong><span>Chef & Food Creator</span></div>
                 </div>
                 <div class="testimonial-card">
                     <i class="fas fa-quote-left"></i>
                     <p>"Working with Tevin's team was seamless. They understood our business needs and delivered a system that actually works."</p>
-                    <div class="client">
-                        <strong>James Mwangi</strong>
-                        <span>Business Owner</span>
-                    </div>
+                    <div class="client"><strong>James Mwangi</strong><span>Business Owner</span></div>
                 </div>
             </div>
         </section>
 
-        <!-- CTA SECTION -->
+        <!-- CTA -->
         <section class="cta">
             <h2>ready to create something <span class="accent">together?</span></h2>
             <p>Let's discuss your project over a virtual coffee ☕</p>
@@ -226,7 +252,7 @@
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
-                <p id="footer-tagline">Building systems that scale · One line of code at a time</p>
+                <p>Building systems that scale · One line of code at a time</p>
                 <div class="footer-links">
                     <a href="index.html">Home</a>
                     <a href="about.html">About</a>
@@ -236,24 +262,26 @@
                     <a href="contact.html">Contact</a>
                     <a href="faq.html">FAQ</a>
                     <a href="privacy.html">Privacy</a>
+                    <a href="order/order.html">Order</a>
+                    <a href="hiring.html">Careers</a>
+                    <a href="client/login.html">Client Portal</a>
                 </div>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/tace925" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com/mulingeTev81504" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
                 <div class="developer-credit">
                     <i class="fas fa-code"></i> Website crafted by <strong>Tevin Mulinge</strong> · © 2026 Tevin's Tech
                 </div>
                 <div class="copyright">
-                    Made with <i class="fas fa-heart" style="color: var(--accent);"></i> and <i class="fas fa-mug-hot"></i> in Nairobi
+                    Made with <i class="fas fa-heart"></i> and <i class="fas fa-mug-hot"></i> in Nairobi
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+    <script src="main/script.js"></script>
 </body>
 </html>

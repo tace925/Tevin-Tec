@@ -1,4 +1,4 @@
-/* ===== ORDER PAGE SPECIFIC STYLES ===== */
+/* ===== ORDER PAGE STYLES ===== */
 
 .order-header {
     text-align: center;
@@ -54,7 +54,6 @@
     cursor: pointer;
     transition: all 0.3s;
     position: relative;
-    overflow: hidden;
 }
 
 .package-card:hover {
@@ -81,7 +80,6 @@
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
-    font-weight: bold;
 }
 
 .package-name {
@@ -168,7 +166,6 @@
 .form-section h3 {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
-    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -262,7 +259,6 @@
     background: var(--accent);
     cursor: pointer;
     border: 2px solid white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 .budget-values {
@@ -326,7 +322,6 @@
     border-radius: 0.5rem;
     border: 1px solid var(--border);
     background: var(--bg-primary);
-    color: var(--text-primary);
 }
 
 /* Order Summary */
@@ -376,7 +371,6 @@
 .submit-order:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px -10px var(--accent);
 }
 
 .payment-methods {
