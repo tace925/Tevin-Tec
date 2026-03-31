@@ -439,41 +439,67 @@
     <script src="main/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-   const SUPABASE_URL = 'https://brbpwsungkpjvhImtrny.supabase.co';   // ← Paste your Project URL here
-    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNj...';     // ← Paste your Publishable key here
+    // ==================== SUPABASE CONFIG ====================
+    const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNjiVIYV6Hw_Pnq_KQsw';
+
     const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // =========================================================
 
-    const form = document.getElementById('applicationForm');
-    const submitBtn = document.getElementById('app-submit-btn');
+    // Contact Form
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            const data = {
+                name: document.getElementById('contact-name').value.trim(),
+                email: document.getElementById('contact-email').value.trim(),
+                company: document.getElementById('contact-company')?.value.trim() || '',
+                project_type: document.getElementById('contact-project-type').value,
+                message: document.getElementById('contact-message').value.trim()
+            };
 
-        const data = {
-            name: document.getElementById('app-name').value.trim(),
-            email: document.getElementById('app-email').value.trim(),
-            phone: document.getElementById('app-phone').value.trim(),
-            position: document.getElementById('app-position').value,
-            portfolio: document.getElementById('app-portfolio').value.trim(),
-            message: document.getElementById('app-message').value.trim()
-        };
+            try {
+                const { error } = await supabase.from('contacts').insert([data]);
+                if (error) throw error;
 
-        try {
-            const { error } = await supabase.from('hiring_applications').insert([data]);
-            if (error) throw error;
+                alert('✅ Message sent successfully! I will reply within 24 hours.');
+                contactForm.reset();
+            } catch (err) {
+                console.error(err);
+                alert('❌ Failed to send message. Please try again.');
+            }
+        });
+    }
 
-            alert('✅ Application submitted successfully! We will review it soon.');
-            form.reset();
-        } catch (err) {
-            console.error(err);
-            alert('❌ Failed to submit. Please try again or email tevinmulinge48@gmail.com');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
-        }
-    });
+    // Hiring Form
+    const hiringForm = document.getElementById('applicationForm');
+    if (hiringForm) {
+        hiringForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                name: document.getElementById('app-name').value.trim(),
+                email: document.getElementById('app-email').value.trim(),
+                phone: document.getElementById('app-phone').value.trim(),
+                position: document.getElementById('app-position').value,
+                portfolio: document.getElementById('app-portfolio').value.trim(),
+                message: document.getElementById('app-message').value.trim()
+            };
+
+            try {
+                const { error } = await supabase.from('hiring_applications').insert([data]);
+                if (error) throw error;
+
+                alert('✅ Application submitted! We will review it soon.');
+                hiringForm.reset();
+            } catch (err) {
+                console.error(err);
+                alert('❌ Failed to submit application.');
+            }
+        });
+    }
 </script>
 </body>
 </html>
