@@ -353,70 +353,53 @@
             </div>
         </section>
 
-        <!-- APPLICATION FORM -->
-        <section id="apply" class="application-section">
-            <h2 class="section-title">send your <span class="accent">application</span></h2>
-            <div class="application-form">
-                <h3>✨ Apply to join Tevin's Tech</h3>
-                <form id="applicationForm" action="https://formspree.io/f/xvzwqqbq" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="_subject" value="New Job Application - Tevin's Tech">
-                    <input type="hidden" name="_template" value="table">
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Full Name *</label>
-                            <input type="text" name="name" placeholder="Tevin Mulinge" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email *</label>
-                            <input type="email" name="email" placeholder="tevin@example.com" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="tel" name="phone" placeholder="+254 700 000 000">
-                        </div>
-                        <div class="form-group">
-                            <label>Position Applying For *</label>
-                            <select name="position" required>
-                                <option value="" disabled selected>Select a position</option>
-                                <option value="frontend">Frontend Developer</option>
-                                <option value="backend">Backend Developer</option>
-                                <option value="designer">UI/UX Designer</option>
-                                <option value="intern">General Internship</option>
-                                <option value="other">Other / Open Application</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Portfolio / GitHub / LinkedIn Link</label>
-                        <input type="url" name="portfolio" placeholder="https://github.com/yourusername">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Tell us about yourself and why you'd be a great fit *</label>
-                        <textarea name="message" rows="5" placeholder="Share your experience, skills, and what excites you about tech..." required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Upload CV (PDF or DOCX)</label>
-                        <input type="file" name="resume" class="file-input" accept=".pdf,.docx">
-                        <small style="color: var(--text-tertiary);">Optional – you can also email your CV separately</small>
-                    </div>
-                    
-                    <input type="text" name="_gotcha" style="display:none">
-                    
-                    <button type="submit" class="submit-order">
-                        <i class="fas fa-paper-plane"></i> Submit Application
-                    </button>
-                    
-                    <div class="application-note">
-                        <i class="fas fa-info-circle"></i> We'll review your application and get back to you within 5-7 working days. If you have any questions, email us at <strong>tevinmulinge48@gmail.com</strong>
-                    </div>
-                </form>
+       <!-- Replace your current application form with this -->
+<form id="applicationForm" class="application-form">
+    <h3>✨ Apply to join Tevin's Tech</h3>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="app-name" placeholder="Tevin Mulinge" required>
+        </div>
+        <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="app-email" placeholder="tevin@example.com" required>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="app-phone" placeholder="+254 700 000 000">
+        </div>
+        <div class="form-group">
+            <label>Position Applying For *</label>
+            <select id="app-position" required>
+                <option value="" disabled selected>Select a position</option>
+                <option value="frontend">Frontend Developer</option>
+                <option value="backend">Backend Developer</option>
+                <option value="designer">UI/UX Designer</option>
+                <option value="intern">General Internship</option>
+                <option value="other">Other / Open Application</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label>Portfolio / GitHub / LinkedIn Link</label>
+        <input type="url" id="app-portfolio" placeholder="https://github.com/yourusername">
+    </div>
+    
+    <div class="form-group">
+        <label>Tell us about yourself and why you'd be a great fit *</label>
+        <textarea id="app-message" rows="5" placeholder="Share your experience..." required></textarea>
+    </div>
+    
+    <button type="submit" id="app-submit-btn" class="submit-order">
+        <i class="fas fa-paper-plane"></i> Submit Application
+    </button>
+</form>
             </div>
         </section>
 
@@ -454,5 +437,43 @@
     </div>
 
     <script src="main/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+   const SUPABASE_URL = 'https://brbpwsungkpjvhImtrny.supabase.co';   // ← Paste your Project URL here
+    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNj...';     // ← Paste your Publishable key here
+    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById('applicationForm');
+    const submitBtn = document.getElementById('app-submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+        const data = {
+            name: document.getElementById('app-name').value.trim(),
+            email: document.getElementById('app-email').value.trim(),
+            phone: document.getElementById('app-phone').value.trim(),
+            position: document.getElementById('app-position').value,
+            portfolio: document.getElementById('app-portfolio').value.trim(),
+            message: document.getElementById('app-message').value.trim()
+        };
+
+        try {
+            const { error } = await supabase.from('hiring_applications').insert([data]);
+            if (error) throw error;
+
+            alert('✅ Application submitted successfully! We will review it soon.');
+            form.reset();
+        } catch (err) {
+            console.error(err);
+            alert('❌ Failed to submit. Please try again or email tevinmulinge48@gmail.com');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+        }
+    });
+</script>
 </body>
 </html>

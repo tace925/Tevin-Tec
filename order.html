@@ -25,15 +25,16 @@
                 <span class="logo-text">TEVIN'S<span class="accent">TECH</span></span>
             </div>
             <nav class="desktop-nav">
-                <a href="/">Home</a>
-                <a href="/about">About</a>
-                <a href="/services">Services</a>
-                <a href="/portfolio">Portfolio</a>
-                <a href="/team">Team</a>
-                <a href="/faq">FAQ</a>
-                <a href="/contact">Contact</a>
-                <a href="/order" class="active">Order</a>
-                <a href="/hiring">Careers</a>
+                <a href="">Home</a>
+                <a href="about">About</a>
+                <a href="services">Services</a>
+                <a href="portfolio">Portfolio</a>
+                <a href="team">Team</a>
+                <a href="faq">FAQ</a>
+                <a href="contact">Contact</a>
+                <a href="order" class="active">Order</a>
+                <a href="hiring.html">Careers</a>
+                <a href="admin-order.html">ADMIN</a>
             </nav>
             <div class="theme-toggle-container">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
@@ -48,15 +49,15 @@
 
         <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobile-nav">
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="/services">Services</a>
-            <a href="/portfolio">Portfolio</a>
-            <a href="/team">Team</a>
-            <a href="/contact">Contact</a>
-            <a href="/faq">FAQ</a>
-            <a href="/privacy">Privacy</a>
-            <a href="/order">Order</a>
+            <a href="index.html">Home</a>
+            <a href="about">About</a>
+            <a href="services">Services</a>
+            <a href="portfolio">Portfolio</a>
+            <a href="team">Team</a>
+            <a href="contact">Contact</a>
+            <a href="faq">FAQ</a>
+            <a href="privacy">Privacy</a>
+            <a href="order">Order</a>
         </div>
 
         <!-- ORDER FORM SECTION -->
@@ -68,19 +69,17 @@
 
             <div class="order-form-container">
                 <form id="orderForm" class="order-form">
-                    <!-- Your existing form fields go here -->
-                    <!-- Example fields (keep or replace with your actual fields) -->
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" name="name" required>
+                        <input type="text" id="name" required>
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" name="email" required>
+                        <input type="email" id="email" required>
                     </div>
                     <div class="form-group">
                         <label>Project Type</label>
-                        <select name="projectType" required>
+                        <select id="projectType" required>
                             <option value="">Select Project Type</option>
                             <option value="portfolio">Personal Portfolio</option>
                             <option value="business">Business Website</option>
@@ -90,10 +89,10 @@
                     </div>
                     <div class="form-group">
                         <label>Project Description</label>
-                        <textarea name="description" rows="6" placeholder="Describe your project..." required></textarea>
+                        <textarea id="description" rows="6" placeholder="Describe your project in detail..." required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-large">Submit Order</button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary btn-large">Submit Order</button>
                 </form>
             </div>
         </section>
@@ -111,16 +110,16 @@
                 <div class="footer-logo">TEVIN'S<span class="accent">TECH</span></div>
                 <p>Building systems that scale</p>
                 <div class="footer-links">
-                    <a href="/">Home</a>
-                    <a href="/about">About</a>
-                    <a href="/services">Services</a>
-                    <a href="/portfolio">Portfolio</a>
-                    <a href="/team">Team</a>
-                    <a href="/contact">Contact</a>
-                    <a href="/faq">FAQ</a>
-                    <a href="/privacy">Privacy</a>
-                    <a href="/order">Order</a>
-                    <a href="/hiring">Careers</a>
+                    <a href="index.html">Home</a>
+                    <a href="about">About</a>
+                    <a href="services">Services</a>
+                    <a href="portfolio">Portfolio</a>
+                    <a href="team">Team</a>
+                    <a href="contact">Contact</a>
+                    <a href="faq">FAQ</a>
+                    <a href="privacy">Privacy</a>
+                    <a href="order">Order</a>
+                    <a href="hiring">Careers</a>
                 </div>
                 <div class="social-links">
                     <a href="https://github.com/tace925" target="_blank"><i class="fab fa-github"></i></a>
@@ -140,38 +139,41 @@
 
     <!-- JavaScript -->
     <script src="/main/script.js"></script>
-    <script>
-        // Dark Mode (same as before)
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://brbpwsungkpjvhImtrny.supabase.co';   // ← Paste your Project URL here
+    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNj...';     // ← Paste your Publishable key here
+    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        function initTheme() {
-            if (localStorage.getItem('theme') === 'dark' || 
-                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                body.classList.add('dark-mode');
-            }
+    const orderForm = document.getElementById('orderForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    orderForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+        const data = {
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            project_type: document.getElementById('projectType').value,
+            description: document.getElementById('description').value.trim()
+        };
+
+        try {
+            const { error } = await supabase.from('orders').insert([data]);
+            if (error) throw error;
+
+            alert('✅ Order received! We will contact you soon.');
+            orderForm.reset();
+        } catch (err) {
+            console.error(err);
+            alert('❌ Failed to submit order. Please try again.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Order';
         }
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
-        });
-
-        // Mobile Menu
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mobileNav = document.getElementById('mobile-nav');
-        mobileBtn.addEventListener('click', () => {
-            mobileNav.classList.toggle('active');
-        });
-
-        // Simple form submission alert (you can replace with real backend later)
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert("✅ Thank you! Your order has been received. We'll contact you soon.");
-            this.reset();
-        });
-
-        window.addEventListener('load', initTheme);
-    </script>
+    });
+</script>
 </body>
 </html>

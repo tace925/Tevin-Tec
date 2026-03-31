@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard · Tevin's Tech</title>
-    <link rel="stylesheet" href="../main/style.css">
+      <!-- CSS -->
+    <link rel="stylesheet" href="/main/style.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -37,7 +39,9 @@
 <body class="light-mode">
     <div class="admin-container">
         <div class="admin-header">
+            </div>
             <h1>📋 Order <span class="accent">Dashboard</span></h1>
+             
             <div>
                 <button class="refresh-btn" onclick="loadOrders()"><i class="fas fa-sync-alt"></i> Refresh</button>
                 <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -60,7 +64,8 @@
     </div>
     
     <div id="orderModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
-    
+    <!-- JavaScript -->
+    <script src="/main/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script>
         const ADMIN_PASSWORD = 'Tev.13n';
@@ -133,5 +138,8 @@
         window.onclick = function(event) { if (event.target === document.getElementById('orderModal')) closeModal(); }
         initSupabase();
     </script>
+    <nav class="desktop-nav">
+               <a href="order.html">ORDER</a> 
+            </nav>
 </body>
 </html>

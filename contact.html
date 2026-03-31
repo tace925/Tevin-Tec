@@ -123,47 +123,32 @@
             <div class="contact-form-full">
                 <h2>send a message</h2>
                 
-                <form id="contact-form" action="https://formspree.io/f/xvzwqqbq" method="POST">
-                    <!-- IMPORTANT: Formspree required fields -->
-                    <input type="hidden" name="_subject" value="New Contact Form Submission from Tevin's Tech">
-                    <input type="hidden" name="_template" value="table">
-                    
-                    <!-- CRITICAL FIX: All fields need proper name attributes [citation:10] -->
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Your name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <!-- CRITICAL FIX: Email field MUST be named "email" for Formspree to recognize it [citation:2] -->
-                        <input type="email" name="email" placeholder="Your email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="text" name="company" placeholder="Company (optional)">
-                    </div>
-                    
-                    <div class="form-group">
-                        <select name="project-type">
-                            <option value="" disabled selected>Select project type</option>
-                            <option value="website">Website & Portfolio</option>
-                            <option value="business">Business System</option>
-                            <option value="custom">Custom Development</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <textarea name="message" placeholder="Tell us about your project..." rows="5" required></textarea>
-                    </div>
-                    
-                    <!-- Honeypot spam protection (hidden field that bots fill, humans don't see) -->
-                    <input type="text" name="_gotcha" style="display:none">
-                    
-                    <button type="submit" class="btn btn-primary btn-large">
-                        <i class="fas fa-paper-plane"></i> Send Message
-                    </button>
-                </form>
-                
+              <form id="contact-form">
+    <div class="form-group">
+        <input type="text" id="contact-name" placeholder="Your name" required>
+    </div>
+    <div class="form-group">
+        <input type="email" id="contact-email" placeholder="Your email" required>
+    </div>
+    <div class="form-group">
+        <input type="text" id="contact-company" placeholder="Company (optional)">
+    </div>
+    <div class="form-group">
+        <select id="contact-project-type">
+            <option value="" disabled selected>Select project type</option>
+            <option value="website">Website & Portfolio</option>
+            <option value="business">Business System</option>
+            <option value="custom">Custom Development</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <textarea id="contact-message" placeholder="Tell us about your project..." rows="5" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-large">
+        <i class="fas fa-paper-plane"></i> Send Message
+    </button>
+</form>
                 <!-- Add client-side validation feedback -->
                 <div id="form-feedback" style="margin-top: 1rem;"></div>
             </div>
@@ -584,5 +569,37 @@
         }
     });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://brbpwsungkpjvhImtrny.supabase.co';   // ← Paste your Project URL here
+    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNj...';     // ← Paste your Publishable key here
+
+    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById('contact-form');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const data = {
+            name: document.getElementById('contact-name').value.trim(),
+            email: document.getElementById('contact-email').value.trim(),
+            company: document.getElementById('contact-company').value.trim(),
+            project_type: document.getElementById('contact-project-type').value,
+            message: document.getElementById('contact-message').value.trim()
+        };
+
+        try {
+            const { error } = await supabase.from('contacts').insert([data]);
+            if (error) throw error;
+
+            alert('✅ Message sent! I will reply within 24 hours.');
+            form.reset();
+        } catch (err) {
+            console.error(err);
+            alert('❌ Failed to send message. Please try again or email me directly.');
+        }
+    });
+</script>
 </body>
 </html>
