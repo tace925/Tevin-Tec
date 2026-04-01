@@ -7,27 +7,19 @@ const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNjiVIYV6Hw_Pnq_KQsw';
 
 let supabaseClient = null;
 
-document.addEventListener('DOMContentLoaded', async function () {
-
+document.addEventListener('DOMContentLoaded', function () {
     try {
-        // Load Supabase library safely
-        if (typeof Supabase === 'undefined') {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-            await new Promise((resolve, reject) => {
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
+        // Use the global Supabase object loaded from CDN
+        if (typeof Supabase !== 'undefined') {
+            supabaseClient = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client initialized for order form');
+        } else {
+            console.error('❌ Supabase library not loaded');
+            alert('Failed to load required libraries. Please refresh the page.');
+            return;
         }
-
-        // Create client
-        supabaseClient = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        console.log('✅ Supabase client initialized for order form');
-
     } catch (err) {
-        console.error('Failed to load Supabase:', err);
+        console.error('Failed to initialize Supabase:', err);
         return;
     }
 

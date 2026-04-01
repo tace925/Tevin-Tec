@@ -139,41 +139,9 @@
 
     <!-- JavaScript -->
     <script src="/main/script.js"></script>
+    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const SUPABASE_URL = 'https://brbpwsungkpjvhImtrny.supabase.co';   // ← Paste your Project URL here
-    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNj...';     // ← Paste your Publishable key here
-    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const orderForm = document.getElementById('orderForm');
-    const submitBtn = document.getElementById('submitBtn');
-
-    orderForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-        const data = {
-            name: document.getElementById('name').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            project_type: document.getElementById('projectType').value,
-            description: document.getElementById('description').value.trim()
-        };
-
-        try {
-            const { error } = await supabase.from('orders').insert([data]);
-            if (error) throw error;
-
-            alert('✅ Order received! We will contact you soon.');
-            orderForm.reset();
-        } catch (err) {
-            console.error(err);
-            alert('❌ Failed to submit order. Please try again.');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Submit Order';
-        }
-    });
-</script>
+    <!-- Order form logic -->
+    <script src="order.js"></script>
 </body>
 </html>
