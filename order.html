@@ -5,19 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Now - Tevin's Tech</title>
     <meta name="description" content="Place your order for website development, portfolio, or business system.">
-    
-    <!-- CSS -->
     <link rel="stylesheet" href="/main/style.css">
-    
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="world-map-bg"></div>
-    
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -37,7 +30,7 @@
                 <a href="admin-order.html">ADMIN</a>
             </nav>
             <div class="theme-toggle-container">
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <button id="theme-toggle" class="theme-toggle">
                     <i class="fas fa-sun light-icon"></i>
                     <i class="fas fa-moon dark-icon"></i>
                 </button>
@@ -91,7 +84,6 @@
                         <label>Project Description</label>
                         <textarea id="description" rows="6" placeholder="Describe your project in detail..." required></textarea>
                     </div>
-
                     <button type="submit" id="submitBtn" class="btn btn-primary btn-large">Submit Order</button>
                 </form>
             </div>
@@ -139,105 +131,66 @@
 
     <!-- JavaScript -->
     <script src="/main/script.js"></script>
-    
-    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Order Form Logic (inline) -->
     <script>
-        // =============================================
-        // ORDER FORM LOGIC - All in one place
-        // =============================================
-        
+        // Supabase Configuration - YOUR CREDENTIALS
         const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyYnB3c3VuZ2twanZobG10bnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA5ODUsImV4cCI6MjA4OTg0Njk4NX0.sm27KKBBNbgI0eEy1n5_E7s8UtRFLRc_PSZ5AEJlYO4';
         
         let supabaseClient = null;
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Supabase
             try {
-                if (typeof supabase !== 'undefined') {
-                    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    console.log('✅ Supabase initialized successfully');
-                } else {
-                    console.error('❌ Supabase library not loaded');
-                }
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase initialized');
             } catch (err) {
-                console.error('Failed to initialize Supabase:', err);
+                console.error('❌ Supabase init failed:', err);
             }
             
-            // Get form elements
             const orderForm = document.getElementById('orderForm');
             const submitBtn = document.getElementById('submitBtn');
             
-            if (!orderForm) {
-                console.error('Order form not found');
-                return;
-            }
+            if (!orderForm || !supabaseClient) return;
             
-            // Form submission handler
             orderForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                // Check if Supabase is ready
-                if (!supabaseClient) {
-                    alert('❌ Database connection not ready. Please refresh the page.');
-                    return;
-                }
-                
-                // Show loading state
-                const originalBtnText = submitBtn.innerHTML;
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
                 
-                // Collect form data
                 const formData = {
-                    name: document.getElementById('name')?.value.trim() || '',
-                    email: document.getElementById('email')?.value.trim() || '',
-                    project_type: document.getElementById('projectType')?.value || '',
-                    description: document.getElementById('description')?.value.trim() || ''
+                    name: document.getElementById('name')?.value.trim(),
+                    email: document.getElementById('email')?.value.trim(),
+                    project_type: document.getElementById('projectType')?.value,
+                    description: document.getElementById('description')?.value.trim()
                 };
                 
                 // Validation
                 if (!formData.name || !formData.email || !formData.project_type || !formData.description) {
-                    alert('⚠️ Please fill in all required fields.');
+                    alert('Please fill all fields');
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.innerHTML = 'Submit Order';
                     return;
                 }
                 
-                // Email validation
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(formData.email)) {
-                    alert('⚠️ Please enter a valid email address.');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnText;
-                    return;
-                }
-                
-                // Submit to Supabase
                 try {
                     const { data, error } = await supabaseClient
                         .from('orders')
-                        .insert([formData]);
+                        .insert([formData])
+                        .select();
                     
-                    if (error) {
-                        throw error;
-                    }
+                    if (error) throw error;
                     
-                    console.log('✅ Order inserted:', data);
-                    alert('✅ Order submitted successfully! We will contact you soon.');
+                    console.log('Success:', data);
+                    alert('✅ Order submitted successfully!');
                     orderForm.reset();
                     
                 } catch (error) {
-                    console.error('Submission error:', error);
-                    alert('❌ Failed to submit order: ' + (error.message || 'Please try again.'));
-                    
+                    console.error('Error:', error);
+                    alert('❌ Error: ' + error.message);
                 } finally {
-                    // Reset button
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.innerHTML = 'Submit Order';
                 }
             });
         });
