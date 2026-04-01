@@ -1,26 +1,35 @@
 // =============================================
-// CLEAN ORDER.JS - Tevin's Tech
-// No conflicts with main/script.js
+// FINAL CLEAN ORDER.JS - No duplicate supabase
 // =============================================
 
 const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNjiVIYV6Hw_Pnq_KQsw';
 
-let supabaseClient;
+let supabaseClient = null;
 
 document.addEventListener('DOMContentLoaded', async function () {
 
-    // Load Supabase safely (only once)
-    if (!window.supabase) {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-        await new Promise(resolve => {
-            script.onload = resolve;
-            document.head.appendChild(script);
-        });
-    }
+    try {
+        // Load Supabase library safely
+        if (typeof Supabase === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+            await new Promise((resolve, reject) => {
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
 
-    supabaseClient = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Create client
+        supabaseClient = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        console.log('✅ Supabase client initialized for order form');
+
+    } catch (err) {
+        console.error('Failed to load Supabase:', err);
+        return;
+    }
 
     const orderForm = document.getElementById('orderForm');
     if (!orderForm) return;
@@ -41,7 +50,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             description: document.getElementById('description')?.value.trim() || ''
         };
 
-        // Simple validation
         if (!formData.name || !formData.email || !formData.project_type || !formData.description) {
             alert('Please fill in all required fields.');
             submitBtn.disabled = false;
@@ -50,23 +58,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         try {
-            const { error } = await supabaseClient
-                .from('orders')
-                .insert([formData]);
-
+            const { error } = await supabaseClient.from('orders').insert([formData]);
             if (error) throw error;
 
             alert('✅ Order submitted successfully! We will contact you soon.');
             orderForm.reset();
-
         } catch (error) {
             console.error('Supabase Error:', error);
-            alert('❌ Failed to submit order. Please try again or email tevinmulinge48@gmail.com');
+            alert('❌ Failed to submit order. Please try again.');
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnText;
         }
     });
-
-    console.log('✅ Order form ready with Supabase');
 });
