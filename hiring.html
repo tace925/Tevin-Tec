@@ -437,69 +437,87 @@
     </div>
 
     <script src="main/script.js"></script>
+         <!-- 1. Load Supabase FIRST -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    // ==================== SUPABASE CONFIG ====================
-    const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNjiVIYV6Hw_Pnq_KQsw';
+    
+    <!-- 2. Your main script -->
+    <script src="main/script.js"></script>
+    
+    <!-- 3. Hiring form script -->
+    <script>
+        const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
+        // ✅ YOUR CORRECT KEY
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyYnB3c3VuZ2twanZobG10bnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA5ODUsImV4cCI6MjA4OTg0Njk4NX0.sm27KKBBNbgI0eEy1n5_E7s8UtRFLRc_PSZ5AEJlYO4';
 
-    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    // =========================================================
-
-    // Contact Form
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const data = {
-                name: document.getElementById('contact-name').value.trim(),
-                email: document.getElementById('contact-email').value.trim(),
-                company: document.getElementById('contact-company')?.value.trim() || '',
-                project_type: document.getElementById('contact-project-type').value,
-                message: document.getElementById('contact-message').value.trim()
-            };
-
-            try {
-                const { error } = await supabase.from('contacts').insert([data]);
-                if (error) throw error;
-
-                alert('✅ Message sent successfully! I will reply within 24 hours.');
-                contactForm.reset();
-            } catch (err) {
-                console.error(err);
-                alert('❌ Failed to send message. Please try again.');
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof supabase === 'undefined') {
+                console.error('❌ Supabase library not loaded!');
+                alert('System error: Supabase not loaded');
+                return;
             }
-        });
-    }
+            
+            console.log('✅ Supabase library found');
+            const { createClient } = supabase;
+            const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Hiring Form Ready');
 
-    // Hiring Form
-    const hiringForm = document.getElementById('applicationForm');
-    if (hiringForm) {
-        hiringForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const data = {
-                name: document.getElementById('app-name').value.trim(),
-                email: document.getElementById('app-email').value.trim(),
-                phone: document.getElementById('app-phone').value.trim(),
-                position: document.getElementById('app-position').value,
-                portfolio: document.getElementById('app-portfolio').value.trim(),
-                message: document.getElementById('app-message').value.trim()
-            };
-
-            try {
-                const { error } = await supabase.from('hiring_applications').insert([data]);
-                if (error) throw error;
-
-                alert('✅ Application submitted! We will review it soon.');
-                hiringForm.reset();
-            } catch (err) {
-                console.error(err);
-                alert('❌ Failed to submit application.');
+            const form = document.getElementById('applicationForm');
+            if (!form) {
+                console.error('Form not found');
+                return;
             }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('app-name').value.trim();
+                const email = document.getElementById('app-email').value.trim();
+                const message = document.getElementById('app-message').value.trim();
+                const phone = document.getElementById('app-phone').value.trim() || null;
+                const position = document.getElementById('app-position').value;
+                const portfolio = document.getElementById('app-portfolio').value.trim() || null;
+
+                if (!name || !email || !message) {
+                    alert('Please fill all required fields (*)');
+                    return;
+                }
+
+                const btn = document.getElementById('app-submit-btn');
+                const originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = 'Submitting...';
+
+                try {
+                    const { data, error } = await client
+                        .from('hiring_applications')
+                        .insert([{ 
+                            name, 
+                            email, 
+                            phone, 
+                            position, 
+                            portfolio, 
+                            message,
+                            created_at: new Date().toISOString()
+                        }])
+                        .select();
+
+                    if (error) throw error;
+
+                    console.log('✅ Application saved:', data);
+                    alert('✅ Application submitted successfully! We will review it soon.');
+                    form.reset();
+                    
+                } catch (err) {
+                    console.error('❌ Error:', err);
+                    alert('❌ Failed to submit: ' + err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            });
         });
-    }
-</script>
+    </script>
+</body>
+</html>
 </body>
 </html>

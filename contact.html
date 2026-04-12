@@ -569,69 +569,145 @@
         }
     });
     </script>
+       <!-- Supabase CDN -->
+           <!-- 1. Load Supabase FIRST -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    // ==================== SUPABASE CONFIG ====================
-    const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_9HsIna20Cq1gNjiVIYV6Hw_Pnq_KQsw';
+    
+    <!-- 2. Your main script -->
+    <script src="main/script.js"></script>
+    
+    <!-- 3. Contact form script -->
+    <script>
+        const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
+        // ✅ YOUR CORRECT KEY
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyYnB3c3VuZ2twanZobG10bnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA5ODUsImV4cCI6MjA4OTg0Njk4NX0.sm27KKBBNbgI0eEy1n5_E7s8UtRFLRc_PSZ5AEJlYO4';
 
-    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    // =========================================================
+        // Modal functions
+        function showModal() {
+            document.getElementById('successModal').classList.add('show');
+        }
 
-    // Contact Form
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('show');
+        }
 
-            const data = {
-                name: document.getElementById('contact-name').value.trim(),
-                email: document.getElementById('contact-email').value.trim(),
-                company: document.getElementById('contact-company')?.value.trim() || '',
-                project_type: document.getElementById('contact-project-type').value,
-                message: document.getElementById('contact-message').value.trim()
-            };
+        function showLoading() {
+            document.getElementById('loadingSpinner').classList.add('show');
+        }
 
-            try {
-                const { error } = await supabase.from('contacts').insert([data]);
-                if (error) throw error;
+        function hideLoading() {
+            document.getElementById('loadingSpinner').classList.remove('show');
+        }
 
-                alert('✅ Message sent successfully! I will reply within 24 hours.');
-                contactForm.reset();
-            } catch (err) {
-                console.error(err);
-                alert('❌ Failed to send message. Please try again.');
+        function showError(message) {
+            const errorToast = document.getElementById('errorToast');
+            document.getElementById('errorMessage').textContent = message;
+            errorToast.classList.add('show');
+            setTimeout(() => errorToast.classList.remove('show'), 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof supabase === 'undefined') {
+                console.error('❌ Supabase library not loaded!');
+                showError('System error: Supabase not loaded');
+                return;
+            }
+            
+            console.log('✅ Supabase library found');
+            const { createClient } = supabase;
+            const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Contact Form Ready');
+
+            const form = document.getElementById('contact-form');
+            if (!form) {
+                console.error('Form not found');
+                return;
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('contact-name').value.trim();
+                const email = document.getElementById('contact-email').value.trim();
+                const message = document.getElementById('contact-message').value.trim();
+                const company = document.getElementById('contact-company').value.trim() || null;
+                const project_type = document.getElementById('contact-project-type').value || null;
+
+                if (!name || !email || !message) {
+                    showError('Please fill all required fields');
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+
+                showLoading();
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = 'Sending...';
+
+                try {
+                    const { data, error } = await client
+                        .from('contacts')
+                        .insert([{ 
+                            name, 
+                            email, 
+                            company, 
+                            project_type, 
+                            message,
+                            created_at: new Date().toISOString()
+                        }])
+                        .select();
+
+                    if (error) throw error;
+
+                    console.log('✅ Contact saved:', data);
+                    hideLoading();
+                    showModal();
+                    form.reset();
+                    
+                } catch (err) {
+                    hideLoading();
+                    console.error('❌ Error:', err);
+                    showError('Failed to send: ' + err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            });
+        });
+
+        // Theme toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    if (body.classList.contains('light-mode')) {
+                        body.classList.remove('light-mode');
+                        body.classList.add('dark-mode');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        body.classList.remove('dark-mode');
+                        body.classList.add('light-mode');
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            }
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
             }
         });
-    }
-
-    // Hiring Form
-    const hiringForm = document.getElementById('applicationForm');
-    if (hiringForm) {
-        hiringForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const data = {
-                name: document.getElementById('app-name').value.trim(),
-                email: document.getElementById('app-email').value.trim(),
-                phone: document.getElementById('app-phone').value.trim(),
-                position: document.getElementById('app-position').value,
-                portfolio: document.getElementById('app-portfolio').value.trim(),
-                message: document.getElementById('app-message').value.trim()
-            };
-
-            try {
-                const { error } = await supabase.from('hiring_applications').insert([data]);
-                if (error) throw error;
-
-                alert('✅ Application submitted! We will review it soon.');
-                hiringForm.reset();
-            } catch (err) {
-                console.error(err);
-                alert('❌ Failed to submit application.');
-            }
-        });
-    }
-</script>
+    </script>
+</body>
+</html>
 </body>
 </html>

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard · Tevin's Tech</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #8b5cf6;
+            --accent-orange: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --border: #475569;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .login-box {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--accent-orange);
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-logo span { color: var(--accent); }
+        
+        .login-box h2 {
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent));
+            border: none;
+            border-radius: 1rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+        
+        .login-error {
+            color: var(--danger);
+            margin-top: 1rem;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        /* Main Dashboard */
+        .dashboard {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-header h1 .accent { color: var(--accent); }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-refresh { background: var(--accent); color: white; }
+        .btn-refresh:hover { background: #7c3aed; }
+        
+        .btn-logout { background: var(--danger); color: white; }
+        .btn-logout:hover { background: #dc2626; }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--bg-secondary);
+            padding: 0.5rem;
+            border-radius: 1rem;
+            width: fit-content;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover { color: var(--text-primary); }
+        
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .tab-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .table-header {
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-card);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        tr:hover { background: rgba(139, 92, 246, 0.05); }
+
+        .cell-customer {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .cell-customer strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .cell-customer small {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .status-badge {
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-new { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .status-processing { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .status-completed { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status-cancelled { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .status-pending { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-view {
+            padding: 0.4rem 0.9rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: opacity 0.3s;
+        }
+
+        .btn-view:hover { opacity: 0.8; }
+
+        .btn-edit {
+            padding: 0.4rem 0.9rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--accent-orange);
+            color: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: opacity 0.3s;
+        }
+
+        .btn-edit:hover { opacity: 0.8; }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal.show { display: flex; }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            max-width: 600px;
+            width: 100%;
+            border-radius: 1rem;
+            padding: 2rem;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover { color: var(--text-primary); }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard { padding: 1rem; }
+            .admin-header h1 { font-size: 1.5rem; }
+            .tab-nav { width: 100%; overflow-x: auto; }
+            .search-box input { width: 100%; }
+            th, td { padding: 0.75rem; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <div class="login-logo">TEVIN'S<span>TECH</span></div>
+            <h2>Admin Access</h2>
+            <input type="password" id="passwordInput" class="login-input" placeholder="Enter password" autofocus>
+            <button onclick="login()" class="login-btn">
+                <i class="fas fa-lock"></i> Unlock Dashboard
+            </button>
+            <div id="loginError" class="login-error">
+                <i class="fas fa-exclamation-circle"></i> Incorrect password
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboard" class="dashboard">
+        <div class="admin-header">
+            <h1>🔐 Admin <span class="accent">Panel</span></h1>
+            <div class="header-actions">
+                <button class="btn btn-refresh" onclick="refreshAll()">
+                    <i class="fas fa-sync-alt"></i> Refresh All
+                </button>
+                <button class="btn btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('orders')" id="tab-orders">
+                <i class="fas fa-shopping-cart"></i> Orders
+                <span class="tab-badge" id="badge-orders">0</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('contacts')" id="tab-contacts">
+                <i class="fas fa-envelope"></i> Contacts
+                <span class="tab-badge" id="badge-contacts">0</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('hiring')" id="tab-hiring">
+                <i class="fas fa-users"></i> Hiring
+                <span class="tab-badge" id="badge-hiring">0</span>
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <div class="table-header">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterTable()">
+                </div>
+                <span id="tableTitle">All Orders</span>
+            </div>
+            <div id="tableContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading data...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+     <script src="main/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // ====================== CONFIG ======================
+        const ADMIN_PASSWORD = 'Tev.13n';
+        const SUPABASE_URL = 'https://brbpwsungkpjvhlmtnyl.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyYnB3c3VuZ2twanZobG10bnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA5ODUsImV4cCI6MjA4OTg0Njk4NX0.sm27KKBBNbgI0eEy1n5_E7s8UtRFLRc_PSZ5AEJlYO4';
+
+        let supabaseClient = null;
+        let currentTab = 'orders';
+        let allData = {
+            orders: [],
+            contacts: [],
+            hiring: []
+        };
+
+        // ====================== AUTH ======================
+        function checkAuth() {
+            const isAuth = sessionStorage.getItem('adminAuth') === 'true';
+            if (isAuth) {
+                showDashboard();
+            }
+        }
+
+        function login() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminAuth', 'true');
+                showDashboard();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            initSupabase();
+            loadAllData();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminAuth');
+            location.reload();
+        }
+
+        // ====================== SUPABASE ======================
+        function initSupabase() {
+            if (!supabaseClient) {
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('✅ Supabase connected');
+            }
+        }
+
+        // ====================== DATA LOADING ======================
+        async function loadAllData() {
+            await Promise.all([
+                loadOrders(),
+                loadContacts(),
+                loadHiring()
+            ]);
+            updateUI();
+        }
+
+        async function refreshAll() {
+            const btn = document.querySelector('.btn-refresh i');
+            btn.classList.add('fa-spin');
+            await loadAllData();
+            setTimeout(() => btn.classList.remove('fa-spin'), 500);
+        }
+
+        async function loadOrders() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('orders')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                allData.orders = data || [];
+                console.log(`✅ Loaded ${data.length} orders`);
+            } catch (err) {
+                console.error('❌ Orders error:', err);
+                allData.orders = [];
+            }
+        }
+
+        async function loadContacts() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('contacts')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                allData.contacts = data || [];
+                console.log(`✅ Loaded ${data.length} contacts`);
+            } catch (err) {
+                console.error('❌ Contacts error:', err);
+                allData.contacts = [];
+            }
+        }
+
+        async function loadHiring() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('hiring_applications')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                allData.hiring = data || [];
+                console.log(`✅ Loaded ${data.length} applications`);
+            } catch (err) {
+                console.error('❌ Hiring error:', err);
+                allData.hiring = [];
+            }
+        }
+
+        // ====================== UI UPDATES ======================
+        function updateUI() {
+            updateBadges();
+            updateStats();
+            renderTable();
+        }
+
+        function updateBadges() {
+            document.getElementById('badge-orders').textContent = allData.orders.length;
+            document.getElementById('badge-contacts').textContent = allData.contacts.length;
+            document.getElementById('badge-hiring').textContent = allData.hiring.length;
+        }
+
+        function updateStats() {
+            const statsGrid = document.getElementById('statsGrid');
+            
+            if (currentTab === 'orders') {
+                const newCount = allData.orders.filter(o => o.status === 'new' || o.order_status === 'new').length;
+                const processing = allData.orders.filter(o => o.status === 'processing' || o.order_status === 'processing').length;
+                const completed = allData.orders.filter(o => o.status === 'completed' || o.order_status === 'completed').length;
+                
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-number">${allData.orders.length}</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🆕</div>
+                        <div class="stat-number">${newCount}</div>
+                        <div class="stat-label">New Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚙️</div>
+                        <div class="stat-number">${processing}</div>
+                        <div class="stat-label">Processing</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-number">${completed}</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                `;
+            } else if (currentTab === 'contacts') {
+                const today = new Date().toDateString();
+                const todayCount = allData.contacts.filter(c => new Date(c.created_at).toDateString() === today).length;
+                
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <div class="stat-number">${allData.contacts.length}</div>
+                        <div class="stat-label">Total Messages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-number">${todayCount}</div>
+                        <div class="stat-label">Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏢</div>
+                        <div class="stat-number">${allData.contacts.filter(c => c.company).length}</div>
+                        <div class="stat-label">With Company</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💼</div>
+                        <div class="stat-number">${allData.contacts.filter(c => c.project_type === 'business').length}</div>
+                        <div class="stat-label">Business Inquiries</div>
+                    </div>
+                `;
+            } else if (currentTab === 'hiring') {
+                const frontend = allData.hiring.filter(h => h.position === 'frontend').length;
+                const backend = allData.hiring.filter(h => h.position === 'backend').length;
+                const designer = allData.hiring.filter(h => h.position === 'designer').length;
+                
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon">👔</div>
+                        <div class="stat-number">${allData.hiring.length}</div>
+                        <div class="stat-label">Total Applications</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎨</div>
+                        <div class="stat-number">${frontend}</div>
+                        <div class="stat-label">Frontend Devs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚙️</div>
+                        <div class="stat-number">${backend}</div>
+                        <div class="stat-label">Backend Devs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✏️</div>
+                        <div class="stat-number">${designer}</div>
+                        <div class="stat-label">Designers</div>
+                    </div>
+                `;
+            }
+        }
+
+        // ====================== TABLE RENDERING ======================
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            // Update title
+            const titles = {
+                orders: 'All Orders',
+                contacts: 'Contact Messages',
+                hiring: 'Job Applications'
+            };
+            document.getElementById('tableTitle').textContent = titles[tab];
+            
+            // Clear search
+            document.getElementById('searchInput').value = '';
+            
+            updateStats();
+            renderTable();
+        }
+
+        function renderTable() {
+            const container = document.getElementById('tableContent');
+            const data = allData[currentTab];
+            
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No ${currentTab} found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<table><thead><tr>';
+            
+            if (currentTab === 'orders') {
+                html += '<th>Date</th><th>Reference</th><th>Customer</th><th>Package</th><th>Amount</th><th>Status</th><th>Actions</th>';
+                html += '</tr></thead><tbody>';
+                html += data.map(item => `
+                    <tr>
+                        <td>${formatDate(item.created_at)}</td>
+                        <td><strong>${item.order_ref || item.reference || '—'}</strong></td>
+                        <td class="cell-customer">
+                            <strong>${item.customer_name || item.full_name || '—'}</strong>
+                            <small>${item.customer_email || item.email || '—'}</small>
+                        </td>
+                        <td>${item.package_name || item.package || '—'}</td>
+                        <td>KES ${(item.amount || 0).toLocaleString()}</td>
+                        <td><span class="status-badge status-${item.status || item.order_status || 'new'}">${item.status || item.order_status || 'new'}</span></td>
+                        <td class="action-btns">
+                            <button class="btn-view" onclick="viewDetail('orders', ${item.id})">View</button>
+                            <button class="btn-edit" onclick="editStatus('orders', ${item.id})">Edit</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else if (currentTab === 'contacts') {
+                html += '<th>Date</th><th>Name</th><th>Email</th><th>Company</th><th>Project Type</th><th>Message</th><th>Actions</th>';
+                html += '</tr></thead><tbody>';
+                html += data.map(item => `
+                    <tr>
+                        <td>${formatDate(item.created_at)}</td>
+                        <td><strong>${item.name}</strong></td>
+                        <td>${item.email}</td>
+                        <td>${item.company || '—'}</td>
+                        <td><span class="status-badge status-${item.project_type || 'pending'}">${item.project_type || '—'}</span></td>
+                        <td>${truncate(item.message, 50)}</td>
+                        <td class="action-btns">
+                            <button class="btn-view" onclick="viewDetail('contacts', ${item.id})">View</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else if (currentTab === 'hiring') {
+                html += '<th>Date</th><th>Name</th><th>Position</th><th>Email</th><th>Phone</th><th>Portfolio</th><th>Actions</th>';
+                html += '</tr></thead><tbody>';
+                html += data.map(item => `
+                    <tr>
+                        <td>${formatDate(item.created_at)}</td>
+                        <td><strong>${item.name}</strong></td>
+                        <td><span class="status-badge status-${item.position}">${formatPosition(item.position)}</span></td>
+                        <td>${item.email}</td>
+                        <td>${item.phone || '—'}</td>
+                        <td>${item.portfolio ? `<a href="${item.portfolio}" target="_blank" style="color: var(--accent);"><i class="fas fa-external-link-alt"></i> Link</a>` : '—'}</td>
+                        <td class="action-btns">
+                            <button class="btn-view" onclick="viewDetail('hiring', ${item.id})">View</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function filterTable() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(search) ? '' : 'none';
+            });
+        }
+
+        // ====================== ACTIONS ======================
+        function viewDetail(type, id) {
+            const item = allData[type].find(i => i.id === id);
+            if (!item) return;
+            
+            const modal = document.getElementById('detailModal');
+            const body = document.getElementById('modalBody');
+            
+            let content = `<div class="modal-title">${type === 'orders' ? 'Order' : type === 'contacts' ? 'Contact Message' : 'Job Application'} Details</div>`;
+            
+            Object.entries(item).forEach(([key, value]) => {
+                if (key === 'id' || value === null) return;
+                const label = key.replace(/_/g, ' ').toUpperCase();
+                let displayValue = value;
+                
+                if (key === 'created_at') displayValue = formatDate(value);
+                else if (key === 'amount') displayValue = `KES ${value.toLocaleString()}`;
+                else if (key === 'message') displayValue = `<pre style="white-space: pre-wrap; font-family: inherit;">${value}</pre>`;
+                else if (typeof value === 'string' && value.startsWith('http')) {
+                    displayValue = `<a href="${value}" target="_blank" style="color: var(--accent);">${value}</a>`;
+                }
+                
+                content += `
+                    <div class="detail-row">
+                        <span class="detail-label">${label}</span>
+                        <span class="detail-value">${displayValue}</span>
+                    </div>
+                `;
+            });
+            
+            body.innerHTML = content;
+            modal.classList.add('show');
+        }
+
+        async function editStatus(type, id) {
+            const statuses = ['new', 'processing', 'completed', 'cancelled'];
+            const current = allData[type].find(i => i.id === id);
+            const currentStatus = current.status || current.order_status || 'new';
+            
+            const newStatus = prompt(`Current status: ${currentStatus}\n\nNew status (${statuses.join('/')}):`, currentStatus);
+            
+            if (!newStatus || !statuses.includes(newStatus)) {
+                alert('Invalid status');
+                return;
+            }
+            
+            try {
+                const updateField = type === 'orders' ? 'order_status' : 'status';
+                const { error } = await supabaseClient
+                    .from(type === 'orders' ? 'orders' : type)
+                    .update({ [updateField]: newStatus })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                // Update local data
+                if (type === 'orders') {
+                    const idx = allData.orders.findIndex(o => o.id === id);
+                    if (idx !== -1) allData.orders[idx][updateField] = newStatus;
+                }
+                
+                alert('✅ Status updated!');
+                renderTable();
+                updateStats();
+                
+            } catch (err) {
+                alert('❌ Failed to update: ' + err.message);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('show');
+        }
+
+        // ====================== UTILS ======================
+        function formatDate(dateString) {
+            if (!dateString) return '—';
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function truncate(str, length) {
+            if (!str) return '—';
+            return str.length > length ? str.substring(0, length) + '...' : str;
+        }
+
+        function formatPosition(pos) {
+            const map = {
+                'frontend': 'Frontend Dev',
+                'backend': 'Backend Dev',
+                'designer': 'UI/UX Designer',
+                'intern': 'Intern',
+                'other': 'Other'
+            };
+            return map[pos] || pos;
+        }
+
+        // ====================== INIT ======================
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            
+            // Enter key on password
+            document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') login();
+            });
+            
+            // Close modal on outside click
+            document.getElementById('detailModal').addEventListener('click', (e) => {
+                if (e.target.id === 'detailModal') closeModal();
+            });
+        });
+
+        // Make functions global
+        window.login = login;
+        window.logout = logout;
+        window.switchTab = switchTab;
+        window.refreshAll = refreshAll;
+        window.viewDetail = viewDetail;
+        window.editStatus = editStatus;
+        window.closeModal = closeModal;
+        window.filterTable = filterTable;
+    </script>
+</body>
+</html>
